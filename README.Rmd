@@ -1,0 +1,203 @@
+---
+title: "README"
+output: html_document
+date: "2025-02-12"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+# Install required packages if not already installed
+if (!require("httr")) install.packages("httr", dependencies = TRUE)
+
+# Set Kaggle credentials (Ensure your Kaggle API key is in ~/.kaggle/kaggle.json)
+Sys.setenv(KAGGLE_CONFIG_DIR = "~/.kaggle")
+
+# Define the dataset to download
+dataset <- "fratzcan/usa-house-prices"
+
+# Create a system command to download the dataset
+system(paste("kaggle datasets download -d", dataset, "--unzip"))
+
+# Print confirmation message
+print("Dataset downloaded and extracted successfully!")
+
+
+# Define the URL for the dataset
+dataset_url <- "https://www.kaggle.com/api/v1/datasets/download/fratzcan/usa-house-prices"
+
+# Define the destination file path (you can change this)
+destination_file <- "usa-house-prices.zip"
+
+# Download the dataset
+download.file(dataset_url, destfile = destination_file, mode = "wb")
+
+# Confirm download
+print("Download complete!")
+
+# Extract the dataset
+unzip(destination_file, exdir = "usa-house-prices")
+
+# List extracted files
+list.files("usa-house-prices")
+
+#Import dataset
+housing_data <- read.csv ("USA Housing Dataset.csv", stringsAsFactors = FALSE )
+
+getwd()
+
+head(housing_data)
+summary(housing_data)
+str(housing_data)
+
+install.packages("DT")
+library(DT)
+datatable(housing_data)
+
+View(housing_data)
+
+#List column names 
+names(housing_data)
+
+```
+#When was the data acquired? 
+min(housing_data$date, na.rm = TRUE)
+max(housing_data$date, na.rm = TRUE)
+
+#ANSWER: > min(housing_data$date, na.rm = TRUE)
+[1] "2014-05-02 00:00:00"
+#> max(housing_data$date, na.rm = TRUE)
+[1] "2014-07-10 00:00:00"
+
+
+
+
+#Where was the data acquired? (geographical location)
+table(housing_data$city)
+city_table <-as.data.frame(table(housing_data$city))
+colnames(city_table) <-c("City", "Frequency")
+head(city_table)
+View(city_table)
+
+
+
+# Create a data frame with attribute names and descriptions
+attributes_table <- data.frame(
+  Attribute = c("date", "price", "bedrooms", "bathrooms", "sqft_living",
+                "sqft_lot", "floors", "waterfront", "view", "condition",  "sqft_above", "sqft_basement", "yr_built", "yr_renovated", "street", "city", "statezip", "country"),
+ 
+  Description = c("Date when the house was sold",
+                  "Sale price of the house",
+                  "Number of bedrooms",
+                  "Number of bathrooms",
+                  "Living area in square feet",
+                  "Lot area in square feet",
+                  "Number of floors",
+                  "Whether the house is waterfront (1: Yes, 0: No)",
+                  "Number of times the house has been viewed",
+                  "Condition of the house (1-5 scale)",
+                  "Square footage of the house above ground",
+                  "Square footage of the basement",
+                  "Year the house was built",
+                  "Year of renovation (0 if never renovated)",
+                  "Street address of house",
+                  "City of the house location",
+                  "Zip code of the house location",
+                  "Country of the house location")
+)
+
+# Print the table
+print(attributes_table)
+
+View(attributes_table)
+
+print(typeof(housing_data$date))
+print(typeof(housing_data$price))
+print(typeof(housing_data$bedrooms))
+print(typeof(housing_data$bathrooms))
+print(typeof(housing_data$sqft_living))
+print(typeof(housing_data$sqft_lot))
+print(typeof(housing_data$floors))
+print(typeof(housing_data$waterfront))
+print(typeof(housing_data$view))
+print(typeof(housing_data$condition))
+print(typeof(housing_data$sqft_above))
+print(typeof(housing_data$sqft_basement))
+print(typeof(housing_data$yr_built))
+print(typeof(housing_data$yr_renovated))
+print(typeof(housing_data$statezip))
+print(typeof(housing_data$country))
+attributes_table$Type = c ( "character", "double", "double", "double",
+                "integer", "integer", "double", "integer", "integer", "integer",
+                "integer", "integer", "integer", "integer",
+                "character", "character", "character", "character")
+
+
+
+
+if (!require("kableExtra")) install.packages("kableExtra", dependencies = TRUE)
+if (!require("knitr")) install.packages("knitr", dependencies = TRUE)
+library(knitr)
+
+
+# Generate a well-formatted table
+styled_table <- kable(attributes_table, format = "html", caption = "📌 USA Housing Data") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+                full_width = F, position = "center") %>%
+  column_spec(1, bold = TRUE, color = "black") %>%
+  column_spec(2, italic = TRUE, color = "blue") %>%
+  column_spec(3, width = "40em") %>%
+  row_spec(0, bold = TRUE, color = "white", background = "black")
+
+# Display the table
+styled_table
+
+
+View(attributes_table)
+
+
+#PART 2
+#Summary statistics for each attribute 
+# Install required package if not installed
+if (!require("psych")) install.packages("psych", dependencies = TRUE)
+
+# Load the library
+library(psych)
+
+describe(housing_data)
+summary(housing_data$price)
+describe(housing_data$price)
+
+# Select only numeric columns
+numeric_data <- housing_data[sapply(housing_data, is.numeric)]
+
+# Create a summary table, ensuring NAs are handled correctly
+summary_table <- data.frame(
+  Attribute = colnames(numeric_data),
+  Min = sapply(numeric_data, function(x) min(x, na.rm = TRUE)),
+  Max = sapply(numeric_data, function(x) max(x, na.rm = TRUE)),
+  Mean = sapply(numeric_data, function(x) mean(x, na.rm = TRUE)),
+  Median = sapply(numeric_data, function(x) median(x, na.rm = TRUE)),
+  SD = sapply(numeric_data, function(x) sd(x, na.rm = TRUE))
+)
+
+# Print the corrected summary table
+print(summary_table)
+
+# Melt the summary statistics data for plotting
+library(reshape2)
+summary_melted <- melt(summary_table, id.vars = "Attribute", variable.name = "Statistic")
+
+library(ggplot2)
+# Plot histograms of the statistics
+ggplot(summary_melted, aes(x = value)) +
+  geom_histogram(binwidth = 1, fill = "blue", color = "black", alpha = 0.7) +
+  facet_wrap(~ Statistic, scales = "free") +
+  labs(title = "Histogram of Summary Statistics", x = "Value", y = "Frequency") +
+  theme_minimal()
+
+# Histogram for Mean of Numeric Data
+hist(summary_stats$Mean, main = "Histogram of Means", xlab = "Mean Values", col = "lightblue", border = "black")
+```
+
