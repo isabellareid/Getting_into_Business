@@ -14,6 +14,11 @@ if (!require("httr")) install.packages("httr", dependencies = TRUE)
 # Set Kaggle credentials (Ensure your Kaggle API key is in ~/.kaggle/kaggle.json)
 Sys.setenv(KAGGLE_CONFIG_DIR = "~/.kaggle")
 
+```
+
+
+## Loading Data
+```{r}
 # Define the dataset to download
 dataset <- "fratzcan/usa-house-prices"
 
@@ -46,29 +51,40 @@ list.files("usa-house-prices")
 housing_data <- read.csv ("USA Housing Dataset.csv", stringsAsFactors = FALSE )
 
 getwd()
+```
 
+
+#Getting summary statistics of the dataset
+```{r}
 head(housing_data)
 summary(housing_data)
 str(housing_data)
 
-install.packages("DT")
-library(DT)
-datatable(housing_data)
+#install.packages("DT")
+#library(DT)
+#datatable(housing_data)
 
-View(housing_data)
+#View(housing_data)
 
 #List column names 
 names(housing_data)
 
 ```
+
+
+#UNDERSTANDING THE DATA
+```{r, eval=FALSE}
+
+
+
 #When was the data acquired? 
 min(housing_data$date, na.rm = TRUE)
 max(housing_data$date, na.rm = TRUE)
 
 #ANSWER: > min(housing_data$date, na.rm = TRUE)
-[1] "2014-05-02 00:00:00"
+#[1] "2014-05-02 00:00:00"
 #> max(housing_data$date, na.rm = TRUE)
-[1] "2014-07-10 00:00:00"
+#[1] "2014-07-10 00:00:00"
 
 
 
@@ -78,7 +94,7 @@ table(housing_data$city)
 city_table <-as.data.frame(table(housing_data$city))
 colnames(city_table) <-c("City", "Frequency")
 head(city_table)
-View(city_table)
+#View(city_table)
 
 
 
@@ -110,8 +126,8 @@ attributes_table <- data.frame(
 # Print the table
 print(attributes_table)
 
-View(attributes_table)
-
+#View(attributes_table)
+#Finding the data types of each attribute 
 print(typeof(housing_data$date))
 print(typeof(housing_data$price))
 print(typeof(housing_data$bedrooms))
@@ -196,8 +212,26 @@ ggplot(summary_melted, aes(x = value)) +
   facet_wrap(~ Statistic, scales = "free") +
   labs(title = "Histogram of Summary Statistics", x = "Value", y = "Frequency") +
   theme_minimal()
+```
 
+
+```{r, include=F}
 # Histogram for Mean of Numeric Data
-hist(summary_stats$Mean, main = "Histogram of Means", xlab = "Mean Values", col = "lightblue", border = "black")
+#hist(attributes_table$Mean, main = "Histogram of Means", xlab = "Mean Values", col #= "lightblue", border = "black")
+```
+
+```{r}
+#ggplot(housing_data, aes(x = "", y=price)) + geom_boxplot(fill="steelblue", color ="black", outlier.color = "red", outlier.shape = 16, outlier.size = 3) + stat_summary(fun = mean, geom = "point", shape = 18, size = 4, color = "darkred") + labs(title = "Boxplot of Housing Prices", y = "Price ($)") + theme_minimal(base_size = 14) + theme(plot.title = element_text(hjust = 0.5, face = "bold"), axis.text.y = element_text(color = "black"), axis.title.y = element_text(face = "bold"), axis.text.x = element_blank(),axis.ticks.x = element_blank())
+```
+
+```{r}
+#Rename column names as code 
+#colnames(attributes_table) = "Code"
+
+#attributes_table2 = attributes_table[-c(1:18)]
+#attributes_table = all_of(attributes_table[-c(1, 2, 19, 20)])
+
+
+
 ```
 
