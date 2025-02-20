@@ -52,11 +52,11 @@ list.files("usa-house-prices")
 #Import dataset
 housing_data <- read.csv ("USA Housing Dataset.csv", stringsAsFactors = FALSE )
 
-getwd()
+#getwd()
 ```
 
 
-#Getting summary statistics of the dataset
+# Getting summary statistics of the dataset
 ```{r}
 head(housing_data)
 summary(housing_data)
@@ -75,31 +75,32 @@ names(housing_data)
 
 
 #UNDERSTANDING THE DATA
-```{r, eval=FALSE}
+# Calculating Min and Max
+```{r, eval=TRUE, include=FALSE}
 
 
 
 #When was the data acquired? 
-min(housing_data$date, na.rm = TRUE)
-max(housing_data$date, na.rm = TRUE)
+mind<-min(housing_data$date, na.rm = TRUE)
+maxd<-max(housing_data$date, na.rm = TRUE)
 
 #ANSWER: > min(housing_data$date, na.rm = TRUE)
 #[1] "2014-05-02 00:00:00"
 #> max(housing_data$date, na.rm = TRUE)
 #[1] "2014-07-10 00:00:00"
 
-
-
-
+```
+The dataset has the min date of `r mind`
+```{r}
 #Where was the data acquired? (geographical location)
 table(housing_data$city)
 city_table <-as.data.frame(table(housing_data$city))
 colnames(city_table) <-c("City", "Frequency")
 head(city_table)
 #View(city_table)
+```
 
-
-
+```{r}
 # Create a data frame with attribute names and descriptions
 attributes_table <- data.frame(
   Attribute = c("date", "price", "bedrooms", "bathrooms", "sqft_living",
@@ -127,7 +128,14 @@ attributes_table <- data.frame(
 
 # Print the table
 print(attributes_table)
+```
+```{r}
 
+str(housing_data, list.len = ncol(housing_data))
+
+```
+
+```{r}
 #View(attributes_table)
 #Finding the data types of each attribute 
 print(typeof(housing_data$date))
@@ -146,12 +154,16 @@ print(typeof(housing_data$yr_built))
 print(typeof(housing_data$yr_renovated))
 print(typeof(housing_data$statezip))
 print(typeof(housing_data$country))
+
+```
+
+
+
+```{r}
 attributes_table$Type = c ( "character", "double", "double", "double",
                 "integer", "integer", "double", "integer", "integer", "integer",
                 "integer", "integer", "integer", "integer",
                 "character", "character", "character", "character")
-
-
 
 
 if (!require("kableExtra")) install.packages("kableExtra", dependencies = TRUE)
@@ -172,9 +184,11 @@ styled_table <- kable(attributes_table, format = "html", caption = "📌 USA Hou
 styled_table
 
 
-View(attributes_table)
+#View(attributes_table)
+```
 
 
+```{r}
 #PART 2
 #Summary statistics for each attribute 
 # Install required package if not installed
@@ -202,6 +216,7 @@ summary_table <- data.frame(
 
 # Print the corrected summary table
 print(summary_table)
+```
 
 # Melt the summary statistics data for plotting
 library(reshape2)
