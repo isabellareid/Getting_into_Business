@@ -1,7 +1,9 @@
 ---
 title: "README"
-output: html_document
-date: "2025-02-12"
+output:
+ github_document:
+ pandoc_args: ["--wrap=none"]
+always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
