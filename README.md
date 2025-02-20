@@ -9,12 +9,7 @@ dataset <- "fratzcan/usa-house-prices"
 
 # Create a system command to download the dataset
 system(paste("kaggle datasets download -d", dataset, "--unzip"))
-```
 
-    ## Warning in system(paste("kaggle datasets download -d", dataset, "--unzip")):
-    ## error in running command
-
-``` r
 # Print confirmation message
 print("Dataset downloaded and extracted successfully!")
 ```
@@ -393,19 +388,7 @@ attributes_table$Type = c ( "character", "double", "double", "double",
                 "character", "character", "character", "character")
 
 
-if (!require("kableExtra")) install.packages("kableExtra", dependencies = TRUE)
-```
 
-    ## Loading required package: kableExtra
-
-``` r
-if (!require("knitr")) install.packages("knitr", dependencies = TRUE)
-```
-
-    ## Loading required package: knitr
-
-``` r
-library(knitr)
 
 
 # Generate a well-formatted table
@@ -647,15 +630,6 @@ character
 ``` r
 #PART 2
 #Summary statistics for each attribute 
-# Install required package if not installed
-if (!require("psych")) install.packages("psych", dependencies = TRUE)
-```
-
-    ## Loading required package: psych
-
-``` r
-# Load the library
-library(psych)
 
 describe(housing_data)
 ```
@@ -762,29 +736,1348 @@ print(summary_table)
     ## yr_built      2.980794e+01
     ## yr_renovated  9.793805e+02
 
-# Melt the summary statistics data for plotting
+``` r
+library(fBasics)
+colnames(housing_data) <- c("Date", "Price", "# of Bedrooms", "# of Bathrooms", "Sqft of Living", "Sqft of Lot", "# of Floors", "Waterfront", "View", "Condition", "Sqft Above Ground", "Sqft of Basement", "Year Built", "Year Rennovated", "Street", "City", "Zipcode", "Country")
 
-library(reshape2) summary_melted \<- melt(summary_table, id.vars =
-“Attribute”, variable.name = “Statistic”)
+Attribute <- colnames(housing_data)  # Extract column names
+Code <- seq_along(Attribute)  # Create a sequence for the codes
 
-library(ggplot2) \# Plot histograms of the statistics
-ggplot(summary_melted, aes(x = value)) + geom_histogram(binwidth = 1,
-fill = “blue”, color = “black”, alpha = 0.7) + facet_wrap(~ Statistic,
-scales = “free”) + labs(title = “Histogram of Summary Statistics”, x =
-“Value”, y = “Frequency”) + theme_minimal()
+# Create a proper data frame
+df <- data.frame(Code, Attribute, stringsAsFactors = FALSE)
 
+# Generate a well-formatted table
+df %>% 
+  kable(caption = "Attribute Codes for Housing Data", longtable = TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header")) %>%
+  row_spec(0, bold = TRUE) %>%
+  column_spec(1, bold = TRUE)
+```
 
-
-
-
-
-    ``` r
-    #ggplot(housing_data, aes(x = "", y=price)) + geom_boxplot(fill="steelblue", color ="black", outlier.color = "red", outlier.shape = 16, outlier.size = 3) + stat_summary(fun = mean, geom = "point", shape = 18, size = 4, color = "darkred") + labs(title = "Boxplot of Housing Prices", y = "Price ($)") + theme_minimal(base_size = 14) + theme(plot.title = element_text(hjust = 0.5, face = "bold"), axis.text.y = element_text(color = "black"), axis.title.y = element_text(face = "bold"), axis.text.x = element_blank(),axis.ticks.x = element_blank())
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Attribute Codes for Housing Data
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;font-weight: bold;">
+Code
+</th>
+<th style="text-align:left;font-weight: bold;">
+Attribute
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+1
+</td>
+<td style="text-align:left;">
+Date
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+2
+</td>
+<td style="text-align:left;">
+Price
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+3
+</td>
+<td style="text-align:left;">
+\# of Bedrooms
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+4
+</td>
+<td style="text-align:left;">
+\# of Bathrooms
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+5
+</td>
+<td style="text-align:left;">
+Sqft of Living
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+6
+</td>
+<td style="text-align:left;">
+Sqft of Lot
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+7
+</td>
+<td style="text-align:left;">
+\# of Floors
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+8
+</td>
+<td style="text-align:left;">
+Waterfront
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+9
+</td>
+<td style="text-align:left;">
+View
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+10
+</td>
+<td style="text-align:left;">
+Condition
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+11
+</td>
+<td style="text-align:left;">
+Sqft Above Ground
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+12
+</td>
+<td style="text-align:left;">
+Sqft of Basement
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+13
+</td>
+<td style="text-align:left;">
+Year Built
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+14
+</td>
+<td style="text-align:left;">
+Year Rennovated
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+15
+</td>
+<td style="text-align:left;">
+Street
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+16
+</td>
+<td style="text-align:left;">
+City
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+17
+</td>
+<td style="text-align:left;">
+Zipcode
+</td>
+</tr>
+<tr>
+<td style="text-align:right;font-weight: bold;">
+18
+</td>
+<td style="text-align:left;">
+Country
+</td>
+</tr>
+</tbody>
+</table>
 
 ``` r
-#Rename column names as code 
-#colnames(attributes_table) = "Code"
-
-#attributes_table2 = attributes_table[-c(1:18)]
-#attributes_table = all_of(attributes_table[-c(1, 2, 19, 20)])
+colnames (housing_data) = Code
+housing_data3 = housing_data[-c(1:18)]
+housing_data2 = housing_data[-c(1, 15:18)]
+bstats = basicStats (housing_data2)[c("Mean", "Stdev", "Median", "Minimum", "Maximum",
+"NAs"), ]
+m<-matrix(1:ncol(bstats), 3)
+for (i in 1:ncol(m)) {
+cat(kable(bstats[, m[, i]], "latex", booktabs = TRUE, digits = 2, ), "\\newline")
+}
 ```
+
+    ## 
+    ## \begin{tabular}{lrrr}
+    ## \toprule
+    ##   & X2 & X3 & X4\\
+    ## \midrule
+    ## Mean & 553062.9 & 3.4 & 2.16\\
+    ## Stdev & 583686.4 & 0.9 & 0.78\\
+    ## Median & 460000.0 & 3.0 & 2.25\\
+    ## Minimum & 0.0 & 0.0 & 0.00\\
+    ## Maximum & 26590000.0 & 8.0 & 6.75\\
+    ## \addlinespace
+    ## NAs & 0.0 & 0.0 & 0.00\\
+    ## \bottomrule
+    ## \end{tabular} \newline
+    ## \begin{tabular}{lrrr}
+    ## \toprule
+    ##   & X5 & X6 & X7\\
+    ## \midrule
+    ## Mean & 2143.64 & 14697.64 & 1.51\\
+    ## Stdev & 957.48 & 35876.84 & 0.53\\
+    ## Median & 1980.00 & 7676.00 & 1.50\\
+    ## Minimum & 370.00 & 638.00 & 1.00\\
+    ## Maximum & 10040.00 & 1074218.00 & 3.50\\
+    ## \addlinespace
+    ## NAs & 0.00 & 0.00 & 0.00\\
+    ## \bottomrule
+    ## \end{tabular} \newline
+    ## \begin{tabular}{lrrr}
+    ## \toprule
+    ##   & X8 & X9 & X10\\
+    ## \midrule
+    ## Mean & 0.01 & 0.25 & 3.45\\
+    ## Stdev & 0.09 & 0.79 & 0.68\\
+    ## Median & 0.00 & 0.00 & 3.00\\
+    ## Minimum & 0.00 & 0.00 & 1.00\\
+    ## Maximum & 1.00 & 4.00 & 5.00\\
+    ## \addlinespace
+    ## NAs & 0.00 & 0.00 & 0.00\\
+    ## \bottomrule
+    ## \end{tabular} \newline
+    ## \begin{tabular}{lrrr}
+    ## \toprule
+    ##   & X11 & X12 & X13\\
+    ## \midrule
+    ## Mean & 1831.35 & 312.29 & 1970.81\\
+    ## Stdev & 861.38 & 464.35 & 29.81\\
+    ## Median & 1600.00 & 0.00 & 1976.00\\
+    ## Minimum & 370.00 & 0.00 & 1900.00\\
+    ## Maximum & 8020.00 & 4820.00 & 2014.00\\
+    ## \addlinespace
+    ## NAs & 0.00 & 0.00 & 0.00\\
+    ## \bottomrule
+    ## \end{tabular} \newline
+    ## \begin{tabular}{lrrr}
+    ## \toprule
+    ##   & X14 & X2 & X3\\
+    ## \midrule
+    ## Mean & 808.37 & 553062.9 & 3.4\\
+    ## Stdev & 979.38 & 583686.4 & 0.9\\
+    ## Median & 0.00 & 460000.0 & 3.0\\
+    ## Minimum & 0.00 & 0.0 & 0.0\\
+    ## Maximum & 2014.00 & 26590000.0 & 8.0\\
+    ## \addlinespace
+    ## NAs & 0.00 & 0.0 & 0.0\\
+    ## \bottomrule
+    ## \end{tabular} \newline
+
+``` r
+print(kable(summary(bstats), format = "pipe", digits = 2))
+```
+
+    ## 
+    ## 
+    ## |   |      X2         |      X3      |      X4       |      X5        |      X6        |      X7       |      X8         |      X9       |     X10       |     X11       |     X12       |     X13       |     X14       |
+    ## |:--|:----------------|:-------------|:--------------|:---------------|:---------------|:--------------|:----------------|:--------------|:--------------|:--------------|:--------------|:--------------|:--------------|
+    ## |   |Min.   :       0 |Min.   :0.000 |Min.   :0.0000 |Min.   :    0.0 |Min.   :      0 |Min.   :0.0000 |Min.   :0.000000 |Min.   :0.0000 |Min.   :0.0000 |Min.   :   0.0 |Min.   :   0.0 |Min.   :   0.0 |Min.   :   0.0 |
+    ## |   |1st Qu.:  115000 |1st Qu.:0.226 |1st Qu.:0.1962 |1st Qu.:  516.9 |1st Qu.:   2398 |1st Qu.:0.6512 |1st Qu.:0.000000 |1st Qu.:0.0000 |1st Qu.:0.7589 |1st Qu.: 492.8 |1st Qu.:   0.0 |1st Qu.: 497.4 |1st Qu.:   0.0 |
+    ## |   |Median :  506531 |Median :1.952 |Median :1.4739 |Median : 1468.7 |Median :  11187 |Median :1.2500 |Median :0.003744 |Median :0.1233 |Median :2.0000 |Median :1230.7 |Median : 156.1 |Median :1935.4 |Median : 404.2 |
+    ## |   |Mean   : 4697792 |Mean   :2.551 |Mean   :1.9913 |Mean   : 2581.9 |Mean   : 188851 |Mean   :1.3415 |Mean   :0.182284 |Mean   :0.8395 |Mean   :2.1885 |Mean   :2113.8 |Mean   : 932.8 |Mean   :1315.1 |Mean   : 633.6 |
+    ## |   |3rd Qu.:  576031 |3rd Qu.:3.300 |3rd Qu.:2.2283 |3rd Qu.: 2102.7 |3rd Qu.:  30582 |3rd Qu.:1.5106 |3rd Qu.:0.066536 |3rd Qu.:0.6546 |3rd Qu.:3.3393 |3rd Qu.:1773.5 |3rd Qu.: 426.3 |3rd Qu.:1974.7 |3rd Qu.: 936.6 |
+    ## |   |Max.   :26590000 |Max.   :8.000 |Max.   :6.7500 |Max.   :10040.0 |Max.   :1074218 |Max.   :3.5000 |Max.   :1.000000 |Max.   :4.0000 |Max.   :5.0000 |Max.   :8020.0 |Max.   :4820.0 |Max.   :2014.0 |Max.   :2014.0 |
+
+``` r
+summary_table <- as.data.frame(summary(bstats))
+gt(summary_table)
+```
+
+<div id="urfckkjtbc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#urfckkjtbc table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+&#10;#urfckkjtbc thead, #urfckkjtbc tbody, #urfckkjtbc tfoot, #urfckkjtbc tr, #urfckkjtbc td, #urfckkjtbc th {
+  border-style: none;
+}
+&#10;#urfckkjtbc p {
+  margin: 0;
+  padding: 0;
+}
+&#10;#urfckkjtbc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+&#10;#urfckkjtbc .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+&#10;#urfckkjtbc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+&#10;#urfckkjtbc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+&#10;#urfckkjtbc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+&#10;#urfckkjtbc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+&#10;#urfckkjtbc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+&#10;#urfckkjtbc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+&#10;#urfckkjtbc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+&#10;#urfckkjtbc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+&#10;#urfckkjtbc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+&#10;#urfckkjtbc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+&#10;#urfckkjtbc .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+&#10;#urfckkjtbc .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+&#10;#urfckkjtbc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+&#10;#urfckkjtbc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+&#10;#urfckkjtbc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+&#10;#urfckkjtbc .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+&#10;#urfckkjtbc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+&#10;#urfckkjtbc .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+&#10;#urfckkjtbc .gt_row_group_first td {
+  border-top-width: 2px;
+}
+&#10;#urfckkjtbc .gt_row_group_first th {
+  border-top-width: 2px;
+}
+&#10;#urfckkjtbc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+&#10;#urfckkjtbc .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+&#10;#urfckkjtbc .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+&#10;#urfckkjtbc .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+&#10;#urfckkjtbc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+&#10;#urfckkjtbc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+&#10;#urfckkjtbc .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+&#10;#urfckkjtbc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+&#10;#urfckkjtbc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+&#10;#urfckkjtbc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+&#10;#urfckkjtbc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+&#10;#urfckkjtbc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+&#10;#urfckkjtbc .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+&#10;#urfckkjtbc .gt_left {
+  text-align: left;
+}
+&#10;#urfckkjtbc .gt_center {
+  text-align: center;
+}
+&#10;#urfckkjtbc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+&#10;#urfckkjtbc .gt_font_normal {
+  font-weight: normal;
+}
+&#10;#urfckkjtbc .gt_font_bold {
+  font-weight: bold;
+}
+&#10;#urfckkjtbc .gt_font_italic {
+  font-style: italic;
+}
+&#10;#urfckkjtbc .gt_super {
+  font-size: 65%;
+}
+&#10;#urfckkjtbc .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+&#10;#urfckkjtbc .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+&#10;#urfckkjtbc .gt_indent_1 {
+  text-indent: 5px;
+}
+&#10;#urfckkjtbc .gt_indent_2 {
+  text-indent: 10px;
+}
+&#10;#urfckkjtbc .gt_indent_3 {
+  text-indent: 15px;
+}
+&#10;#urfckkjtbc .gt_indent_4 {
+  text-indent: 20px;
+}
+&#10;#urfckkjtbc .gt_indent_5 {
+  text-indent: 25px;
+}
+&#10;#urfckkjtbc .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+&#10;#urfckkjtbc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Var1">Var1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Var2">Var2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Freq">Freq</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X2</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :       0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X2</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.:  115000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X2</td>
+<td headers="Freq" class="gt_row gt_left">Median :  506531  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X2</td>
+<td headers="Freq" class="gt_row gt_left">Mean   : 4697792  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X2</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.:  576031  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X2</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :26590000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X3</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :0.000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X3</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.:0.226  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X3</td>
+<td headers="Freq" class="gt_row gt_left">Median :1.952  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X3</td>
+<td headers="Freq" class="gt_row gt_left">Mean   :2.551  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X3</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.:3.300  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X3</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :8.000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X4</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :0.0000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X4</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.:0.1962  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X4</td>
+<td headers="Freq" class="gt_row gt_left">Median :1.4739  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X4</td>
+<td headers="Freq" class="gt_row gt_left">Mean   :1.9913  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X4</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.:2.2283  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X4</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :6.7500  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X5</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :    0.0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X5</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.:  516.9  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X5</td>
+<td headers="Freq" class="gt_row gt_left">Median : 1468.7  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X5</td>
+<td headers="Freq" class="gt_row gt_left">Mean   : 2581.9  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X5</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.: 2102.7  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X5</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :10040.0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X6</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :      0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X6</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.:   2398  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X6</td>
+<td headers="Freq" class="gt_row gt_left">Median :  11187  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X6</td>
+<td headers="Freq" class="gt_row gt_left">Mean   : 188851  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X6</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.:  30582  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X6</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :1074218  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X7</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :0.0000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X7</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.:0.6512  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X7</td>
+<td headers="Freq" class="gt_row gt_left">Median :1.2500  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X7</td>
+<td headers="Freq" class="gt_row gt_left">Mean   :1.3415  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X7</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.:1.5106  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X7</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :3.5000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X8</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :0.000000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X8</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.:0.000000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X8</td>
+<td headers="Freq" class="gt_row gt_left">Median :0.003744  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X8</td>
+<td headers="Freq" class="gt_row gt_left">Mean   :0.182284  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X8</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.:0.066536  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X8</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :1.000000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X9</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :0.0000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X9</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.:0.0000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X9</td>
+<td headers="Freq" class="gt_row gt_left">Median :0.1233  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X9</td>
+<td headers="Freq" class="gt_row gt_left">Mean   :0.8395  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X9</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.:0.6546  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">      X9</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :4.0000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X10</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :0.0000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X10</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.:0.7589  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X10</td>
+<td headers="Freq" class="gt_row gt_left">Median :2.0000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X10</td>
+<td headers="Freq" class="gt_row gt_left">Mean   :2.1885  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X10</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.:3.3393  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X10</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :5.0000  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X11</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :   0.0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X11</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.: 492.8  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X11</td>
+<td headers="Freq" class="gt_row gt_left">Median :1230.7  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X11</td>
+<td headers="Freq" class="gt_row gt_left">Mean   :2113.8  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X11</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.:1773.5  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X11</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :8020.0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X12</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :   0.0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X12</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.:   0.0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X12</td>
+<td headers="Freq" class="gt_row gt_left">Median : 156.1  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X12</td>
+<td headers="Freq" class="gt_row gt_left">Mean   : 932.8  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X12</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.: 426.3  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X12</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :4820.0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X13</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :   0.0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X13</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.: 497.4  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X13</td>
+<td headers="Freq" class="gt_row gt_left">Median :1935.4  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X13</td>
+<td headers="Freq" class="gt_row gt_left">Mean   :1315.1  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X13</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.:1974.7  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X13</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :2014.0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X14</td>
+<td headers="Freq" class="gt_row gt_left">Min.   :   0.0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X14</td>
+<td headers="Freq" class="gt_row gt_left">1st Qu.:   0.0  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X14</td>
+<td headers="Freq" class="gt_row gt_left">Median : 404.2  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X14</td>
+<td headers="Freq" class="gt_row gt_left">Mean   : 633.6  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X14</td>
+<td headers="Freq" class="gt_row gt_left">3rd Qu.: 936.6  </td></tr>
+    <tr><td headers="Var1" class="gt_row gt_center"></td>
+<td headers="Var2" class="gt_row gt_center">     X14</td>
+<td headers="Freq" class="gt_row gt_left">Max.   :2014.0  </td></tr>
+  </tbody>
+  &#10;  
+</table>
+</div>
+
+``` r
+summary_stats <- bstats %>%
+  summarise(across(everything(), list(
+    Min = ~min(.x, na.rm = TRUE),
+    Q1 = ~quantile(.x, 0.25, na.rm = TRUE),
+    Median = ~median(.x, na.rm = TRUE),
+    Mean = ~mean(.x, na.rm = TRUE),
+    Q3 = ~quantile(.x, 0.75, na.rm = TRUE),
+    Max = ~max(.x, na.rm = TRUE),
+    SD = ~sd(.x, na.rm = TRUE)
+  ), .names = "{.col}_{.fn}"))
+
+summary_long <- summary_stats %>%
+  pivot_longer(cols = everything(), names_to = c("Attribute", "Statistic"), names_sep = "_") %>%
+  pivot_wider(names_from = "Attribute", values_from = "value") %>%
+  mutate(across(where(is.numeric), ~round(.x, 2)))
+
+print(summary_long)
+```
+
+    ## # A tibble: 7 × 14
+    ##   Statistic     X2    X3    X4     X5     X6    X7    X8    X9   X10   X11   X12
+    ##   <chr>      <dbl> <dbl> <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+    ## 1 Min       0       0     0        0  0       0     0     0     0       0     0 
+    ## 2 Q1        1.15e5  0.23  0.2    517. 2.40e3  0.65  0     0     0.76  493.    0 
+    ## 3 Median    5.07e5  1.95  1.47  1469. 1.12e4  1.25  0     0.12  2    1231.  156.
+    ## 4 Mean      4.70e6  2.55  1.99  2582. 1.89e5  1.34  0.18  0.84  2.19 2114.  933.
+    ## 5 Q3        5.76e5  3.3   2.23  2103. 3.06e4  1.51  0.07  0.65  3.34 1774.  426.
+    ## 6 Max       2.66e7  8     6.75 10040  1.07e6  3.5   1     4     5    8020  4820 
+    ## 7 SD        1.07e7  3.04  2.53  3752. 4.34e5  1.21  0.4   1.58  1.93 2977. 1914.
+    ## # ℹ 2 more variables: X13 <dbl>, X14 <dbl>
+
+``` r
+summary_long <- summary_stats %>%
+  pivot_longer(cols = everything(), names_to = c("Attribute", "Statistic"), names_sep = "_") %>%
+  pivot_wider(names_from = "Attribute", values_from = "value") %>%
+  mutate(across(where(is.numeric), ~round(.x, 2)))
+print(summary_long)
+```
+
+    ## # A tibble: 7 × 14
+    ##   Statistic     X2    X3    X4     X5     X6    X7    X8    X9   X10   X11   X12
+    ##   <chr>      <dbl> <dbl> <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+    ## 1 Min       0       0     0        0  0       0     0     0     0       0     0 
+    ## 2 Q1        1.15e5  0.23  0.2    517. 2.40e3  0.65  0     0     0.76  493.    0 
+    ## 3 Median    5.07e5  1.95  1.47  1469. 1.12e4  1.25  0     0.12  2    1231.  156.
+    ## 4 Mean      4.70e6  2.55  1.99  2582. 1.89e5  1.34  0.18  0.84  2.19 2114.  933.
+    ## 5 Q3        5.76e5  3.3   2.23  2103. 3.06e4  1.51  0.07  0.65  3.34 1774.  426.
+    ## 6 Max       2.66e7  8     6.75 10040  1.07e6  3.5   1     4     5    8020  4820 
+    ## 7 SD        1.07e7  3.04  2.53  3752. 4.34e5  1.21  0.4   1.58  1.93 2977. 1914.
+    ## # ℹ 2 more variables: X13 <dbl>, X14 <dbl>
+
+``` r
+summary_long %>%
+  kable(caption = "Summary Statistics for Housing Data", longtable = TRUE, align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header")) %>%
+  row_spec(0, bold = TRUE) %>%  # Bold column names (first row)
+  row_spec(1:nrow(summary_long), font_size = 12) %>%  # Adjust font size for summary rows
+  column_spec(1, bold = TRUE)   # Bold the first column (Statistic names)
+```
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Summary Statistics for Housing Data
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;font-weight: bold;">
+Statistic
+</th>
+<th style="text-align:center;font-weight: bold;">
+X2
+</th>
+<th style="text-align:center;font-weight: bold;">
+X3
+</th>
+<th style="text-align:center;font-weight: bold;">
+X4
+</th>
+<th style="text-align:center;font-weight: bold;">
+X5
+</th>
+<th style="text-align:center;font-weight: bold;">
+X6
+</th>
+<th style="text-align:center;font-weight: bold;">
+X7
+</th>
+<th style="text-align:center;font-weight: bold;">
+X8
+</th>
+<th style="text-align:center;font-weight: bold;">
+X9
+</th>
+<th style="text-align:center;font-weight: bold;">
+X10
+</th>
+<th style="text-align:center;font-weight: bold;">
+X11
+</th>
+<th style="text-align:center;font-weight: bold;">
+X12
+</th>
+<th style="text-align:center;font-weight: bold;">
+X13
+</th>
+<th style="text-align:center;font-weight: bold;">
+X14
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;font-size: 12px;font-weight: bold;">
+Min
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.0
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:center;font-size: 12px;font-weight: bold;">
+Q1
+</td>
+<td style="text-align:center;font-size: 12px;">
+115000.0
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.23
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.20
+</td>
+<td style="text-align:center;font-size: 12px;">
+516.87
+</td>
+<td style="text-align:center;font-size: 12px;">
+2397.50
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.65
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.76
+</td>
+<td style="text-align:center;font-size: 12px;">
+492.85
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+497.36
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:center;font-size: 12px;font-weight: bold;">
+Median
+</td>
+<td style="text-align:center;font-size: 12px;">
+506531.4
+</td>
+<td style="text-align:center;font-size: 12px;">
+1.95
+</td>
+<td style="text-align:center;font-size: 12px;">
+1.47
+</td>
+<td style="text-align:center;font-size: 12px;">
+1468.74
+</td>
+<td style="text-align:center;font-size: 12px;">
+11186.82
+</td>
+<td style="text-align:center;font-size: 12px;">
+1.25
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.12
+</td>
+<td style="text-align:center;font-size: 12px;">
+2.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+1230.69
+</td>
+<td style="text-align:center;font-size: 12px;">
+156.14
+</td>
+<td style="text-align:center;font-size: 12px;">
+1935.41
+</td>
+<td style="text-align:center;font-size: 12px;">
+404.18
+</td>
+</tr>
+<tr>
+<td style="text-align:center;font-size: 12px;font-weight: bold;">
+Mean
+</td>
+<td style="text-align:center;font-size: 12px;">
+4697791.5
+</td>
+<td style="text-align:center;font-size: 12px;">
+2.55
+</td>
+<td style="text-align:center;font-size: 12px;">
+1.99
+</td>
+<td style="text-align:center;font-size: 12px;">
+2581.85
+</td>
+<td style="text-align:center;font-size: 12px;">
+188851.08
+</td>
+<td style="text-align:center;font-size: 12px;">
+1.34
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.18
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.84
+</td>
+<td style="text-align:center;font-size: 12px;">
+2.19
+</td>
+<td style="text-align:center;font-size: 12px;">
+2113.79
+</td>
+<td style="text-align:center;font-size: 12px;">
+932.77
+</td>
+<td style="text-align:center;font-size: 12px;">
+1315.10
+</td>
+<td style="text-align:center;font-size: 12px;">
+633.62
+</td>
+</tr>
+<tr>
+<td style="text-align:center;font-size: 12px;font-weight: bold;">
+Q3
+</td>
+<td style="text-align:center;font-size: 12px;">
+576030.6
+</td>
+<td style="text-align:center;font-size: 12px;">
+3.30
+</td>
+<td style="text-align:center;font-size: 12px;">
+2.23
+</td>
+<td style="text-align:center;font-size: 12px;">
+2102.73
+</td>
+<td style="text-align:center;font-size: 12px;">
+30582.04
+</td>
+<td style="text-align:center;font-size: 12px;">
+1.51
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.07
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.65
+</td>
+<td style="text-align:center;font-size: 12px;">
+3.34
+</td>
+<td style="text-align:center;font-size: 12px;">
+1773.51
+</td>
+<td style="text-align:center;font-size: 12px;">
+426.33
+</td>
+<td style="text-align:center;font-size: 12px;">
+1974.70
+</td>
+<td style="text-align:center;font-size: 12px;">
+936.63
+</td>
+</tr>
+<tr>
+<td style="text-align:center;font-size: 12px;font-weight: bold;">
+Max
+</td>
+<td style="text-align:center;font-size: 12px;">
+26590000.0
+</td>
+<td style="text-align:center;font-size: 12px;">
+8.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+6.75
+</td>
+<td style="text-align:center;font-size: 12px;">
+10040.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+1074218.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+3.50
+</td>
+<td style="text-align:center;font-size: 12px;">
+1.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+4.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+5.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+8020.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+4820.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+2014.00
+</td>
+<td style="text-align:center;font-size: 12px;">
+2014.00
+</td>
+</tr>
+<tr>
+<td style="text-align:center;font-size: 12px;font-weight: bold;">
+SD
+</td>
+<td style="text-align:center;font-size: 12px;">
+10728194.6
+</td>
+<td style="text-align:center;font-size: 12px;">
+3.04
+</td>
+<td style="text-align:center;font-size: 12px;">
+2.53
+</td>
+<td style="text-align:center;font-size: 12px;">
+3751.67
+</td>
+<td style="text-align:center;font-size: 12px;">
+433939.73
+</td>
+<td style="text-align:center;font-size: 12px;">
+1.21
+</td>
+<td style="text-align:center;font-size: 12px;">
+0.40
+</td>
+<td style="text-align:center;font-size: 12px;">
+1.58
+</td>
+<td style="text-align:center;font-size: 12px;">
+1.93
+</td>
+<td style="text-align:center;font-size: 12px;">
+2976.73
+</td>
+<td style="text-align:center;font-size: 12px;">
+1914.43
+</td>
+<td style="text-align:center;font-size: 12px;">
+1007.85
+</td>
+<td style="text-align:center;font-size: 12px;">
+807.46
+</td>
+</tr>
+</tbody>
+</table>

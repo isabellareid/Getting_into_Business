@@ -7,7 +7,7 @@ always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 
 # Install required packages if not already installed
@@ -16,6 +16,20 @@ if (!require("httr")) install.packages("httr", dependencies = TRUE)
 # Set Kaggle credentials (Ensure your Kaggle API key is in ~/.kaggle/kaggle.json)
 Sys.setenv(KAGGLE_CONFIG_DIR = "~/.kaggle")
 
+if (!require("kableExtra")) install.packages("kableExtra", dependencies = TRUE)
+if (!require("knitr")) install.packages("knitr", dependencies = TRUE)
+library(knitr)
+
+# Install required package if not installed
+if (!require("psych")) install.packages("psych", dependencies = TRUE)
+
+# Load the library
+library(psych)
+
+library(gt)
+library(tidyr)
+library(dplyr)
+library(kableExtra)
 ```
 
 
@@ -166,9 +180,7 @@ attributes_table$Type = c ( "character", "double", "double", "double",
                 "character", "character", "character", "character")
 
 
-if (!require("kableExtra")) install.packages("kableExtra", dependencies = TRUE)
-if (!require("knitr")) install.packages("knitr", dependencies = TRUE)
-library(knitr)
+
 
 
 # Generate a well-formatted table
@@ -191,11 +203,6 @@ styled_table
 ```{r}
 #PART 2
 #Summary statistics for each attribute 
-# Install required package if not installed
-if (!require("psych")) install.packages("psych", dependencies = TRUE)
-
-# Load the library
-library(psych)
 
 describe(housing_data)
 summary(housing_data$price)
@@ -218,37 +225,86 @@ summary_table <- data.frame(
 print(summary_table)
 ```
 
-# Melt the summary statistics data for plotting
-library(reshape2)
-summary_melted <- melt(summary_table, id.vars = "Attribute", variable.name = "Statistic")
-
-library(ggplot2)
-# Plot histograms of the statistics
-ggplot(summary_melted, aes(x = value)) +
-  geom_histogram(binwidth = 1, fill = "blue", color = "black", alpha = 0.7) +
-  facet_wrap(~ Statistic, scales = "free") +
-  labs(title = "Histogram of Summary Statistics", x = "Value", y = "Frequency") +
-  theme_minimal()
-```
 
 
-```{r, include=F}
-# Histogram for Mean of Numeric Data
-#hist(attributes_table$Mean, main = "Histogram of Means", xlab = "Mean Values", col #= "lightblue", border = "black")
+
+```{r}
+library(fBasics)
+colnames(housing_data) <- c("Date", "Price", "# of Bedrooms", "# of Bathrooms", "Sqft of Living", "Sqft of Lot", "# of Floors", "Waterfront", "View", "Condition", "Sqft Above Ground", "Sqft of Basement", "Year Built", "Year Rennovated", "Street", "City", "Zipcode", "Country")
+
+Attribute <- colnames(housing_data)  # Extract column names
+Code <- seq_along(Attribute)  # Create a sequence for the codes
+
+# Create a proper data frame
+df <- data.frame(Code, Attribute, stringsAsFactors = FALSE)
+
+# Generate a well-formatted table
+df %>% 
+  kable(caption = "Attribute Codes for Housing Data", longtable = TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header")) %>%
+  row_spec(0, bold = TRUE) %>%
+  column_spec(1, bold = TRUE)
+
 ```
 
 ```{r}
-#ggplot(housing_data, aes(x = "", y=price)) + geom_boxplot(fill="steelblue", color ="black", outlier.color = "red", outlier.shape = 16, outlier.size = 3) + stat_summary(fun = mean, geom = "point", shape = 18, size = 4, color = "darkred") + labs(title = "Boxplot of Housing Prices", y = "Price ($)") + theme_minimal(base_size = 14) + theme(plot.title = element_text(hjust = 0.5, face = "bold"), axis.text.y = element_text(color = "black"), axis.title.y = element_text(face = "bold"), axis.text.x = element_blank(),axis.ticks.x = element_blank())
+
+colnames (housing_data) = Code
+housing_data3 = housing_data[-c(1:18)]
+housing_data2 = housing_data[-c(1, 15:18)]
+bstats = basicStats (housing_data2)[c("Mean", "Stdev", "Median", "Minimum", "Maximum",
+"NAs"), ]
+m<-matrix(1:ncol(bstats), 3)
+for (i in 1:ncol(m)) {
+cat(kable(bstats[, m[, i]], "latex", booktabs = TRUE, digits = 2, ), "\\newline")
+}
+
+print(kable(summary(bstats), format = "pipe", digits = 2))
+
+summary_table <- as.data.frame(summary(bstats))
+gt(summary_table)
 ```
 
 ```{r}
-#Rename column names as code 
-#colnames(attributes_table) = "Code"
+summary_stats <- bstats %>%
+  summarise(across(everything(), list(
+    Min = ~min(.x, na.rm = TRUE),
+    Q1 = ~quantile(.x, 0.25, na.rm = TRUE),
+    Median = ~median(.x, na.rm = TRUE),
+    Mean = ~mean(.x, na.rm = TRUE),
+    Q3 = ~quantile(.x, 0.75, na.rm = TRUE),
+    Max = ~max(.x, na.rm = TRUE),
+    SD = ~sd(.x, na.rm = TRUE)
+  ), .names = "{.col}_{.fn}"))
 
-#attributes_table2 = attributes_table[-c(1:18)]
-#attributes_table = all_of(attributes_table[-c(1, 2, 19, 20)])
+summary_long <- summary_stats %>%
+  pivot_longer(cols = everything(), names_to = c("Attribute", "Statistic"), names_sep = "_") %>%
+  pivot_wider(names_from = "Attribute", values_from = "value") %>%
+  mutate(across(where(is.numeric), ~round(.x, 2)))
 
-
-
+print(summary_long)
 ```
+```{r}
+summary_long <- summary_stats %>%
+  pivot_longer(cols = everything(), names_to = c("Attribute", "Statistic"), names_sep = "_") %>%
+  pivot_wider(names_from = "Attribute", values_from = "value") %>%
+  mutate(across(where(is.numeric), ~round(.x, 2)))
+print(summary_long)
+```
+
+
+```{r}
+summary_long %>%
+  kable(caption = "Summary Statistics for Housing Data", longtable = TRUE, align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header")) %>%
+  row_spec(0, bold = TRUE) %>%  # Bold column names (first row)
+  row_spec(1:nrow(summary_long), font_size = 12) %>%  # Adjust font size for summary rows
+  column_spec(1, bold = TRUE)   # Bold the first column (Statistic names)
+```
+
+
+
+
+
+
 
