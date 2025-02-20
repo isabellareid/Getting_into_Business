@@ -262,7 +262,7 @@ cat(kable(bstats[, m[, i]], "latex", booktabs = TRUE, digits = 2, ), "\\newline"
 print(kable(summary(bstats), format = "pipe", digits = 2))
 
 summary_table <- as.data.frame(summary(bstats))
-gt(summary_table)
+#gt(summary_table)
 ```
 
 ```{r}
