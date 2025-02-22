@@ -30,21 +30,20 @@ library(gt)
 library(tidyr)
 library(dplyr)
 library(kableExtra)
+library(fBasics)
 ```
 
 
-## Loading Data
+## Importing the Dataset
 ```{r}
 # Define the dataset to download
 dataset <- "fratzcan/usa-house-prices"
 
 # Create a system command to download the dataset
 system(paste("kaggle datasets download -d", dataset, "--unzip"))
+```
 
-# Print confirmation message
-print("Dataset downloaded and extracted successfully!")
-
-
+```{r}
 # Define the URL for the dataset
 dataset_url <- "https://www.kaggle.com/api/v1/datasets/download/fratzcan/usa-house-prices"
 
@@ -53,9 +52,6 @@ destination_file <- "usa-house-prices.zip"
 
 # Download the dataset
 download.file(dataset_url, destfile = destination_file, mode = "wb")
-
-# Confirm download
-print("Download complete!")
 
 # Extract the dataset
 unzip(destination_file, exdir = "usa-house-prices")
@@ -70,8 +66,8 @@ housing_data <- read.csv ("USA Housing Dataset.csv", stringsAsFactors = FALSE )
 ```
 
 
-# Getting summary statistics of the dataset
-```{r}
+
+```{r, echo =FALSE}
 head(housing_data)
 summary(housing_data)
 str(housing_data)
@@ -88,8 +84,7 @@ names(housing_data)
 ```
 
 
-#UNDERSTANDING THE DATA
-# Calculating Min and Max
+## Understanding the Data
 ```{r, eval=TRUE, include=FALSE}
 
 
@@ -98,28 +93,44 @@ names(housing_data)
 mind<-min(housing_data$date, na.rm = TRUE)
 maxd<-max(housing_data$date, na.rm = TRUE)
 
+
 #ANSWER: > min(housing_data$date, na.rm = TRUE)
 #[1] "2014-05-02 00:00:00"
 #> max(housing_data$date, na.rm = TRUE)
 #[1] "2014-07-10 00:00:00"
 
-```
-The dataset has the min date of `r mind`
-```{r}
 #Where was the data acquired? (geographical location)
 table(housing_data$city)
 city_table <-as.data.frame(table(housing_data$city))
 colnames(city_table) <-c("City", "Frequency")
-head(city_table)
+where <- city_table
+
 #View(city_table)
+
 ```
+### When was the data acquired?
+
+The data was gathered over the period of time from May 2, 2014 and July 10, 2014. The data was uploaded to Kaggle. The date this data was first accessed for this analysis was February 12, 2025. 
+The dataset has the min date of `r mind`
+
+### Where was the data acquired?
+
+The data was acquired from Zillow from several different cities in Washington State.  The data was then uploaded to Kaggle. Below is a table that displays the number of houses in each city in Washington:  `r knitr::kable(where)`
+
+ 
+
+### How was the data acquired?
+
+### What are the attributes of this dataset?
+The dataset contains eighteen different attributes. This section presents the attributes that appear in the dataset. 
+First, we specify what each attribute is with descriptions and their data type. Then, we provide a codebook that specifies a number with each individual attribute. These numbers will be useful in determining which attribute is correlated with the summary statistics displayed in the last table.  
 
 ```{r}
 # Create a data frame with attribute names and descriptions
 attributes_table <- data.frame(
   Attribute = c("date", "price", "bedrooms", "bathrooms", "sqft_living",
                 "sqft_lot", "floors", "waterfront", "view", "condition",  "sqft_above", "sqft_basement", "yr_built", "yr_renovated", "street", "city", "statezip", "country"),
- 
+
   Description = c("Date when the house was sold",
                   "Sale price of the house",
                   "Number of bedrooms",
@@ -139,17 +150,20 @@ attributes_table <- data.frame(
                   "Zip code of the house location",
                   "Country of the house location")
 )
+```
 
+```{r, eval=TRUE, include=FALSE}
 # Print the table
 print(attributes_table)
 ```
-```{r}
+
+```{r, eval=TRUE, include=FALSE}
 
 str(housing_data, list.len = ncol(housing_data))
 
 ```
 
-```{r}
+```{r, eval=TRUE, include=FALSE}
 #View(attributes_table)
 #Finding the data types of each attribute 
 print(typeof(housing_data$date))
@@ -174,6 +188,7 @@ print(typeof(housing_data$country))
 
 
 ```{r}
+# Add a column corresponding to each of the attributes data type 
 attributes_table$Type = c ( "character", "double", "double", "double",
                 "integer", "integer", "double", "integer", "integer", "integer",
                 "integer", "integer", "integer", "integer",
@@ -194,13 +209,17 @@ styled_table <- kable(attributes_table, format = "html", caption = "📌 USA Hou
 
 # Display the table
 styled_table
+```
 
+```{r, eval=TRUE, include=FALSE}
 
 #View(attributes_table)
 ```
 
 
-```{r}
+## Summary Statistics
+
+```{r, eval=TRUE, include=FALSE}
 #PART 2
 #Summary statistics for each attribute 
 
@@ -228,10 +247,11 @@ print(summary_table)
 
 
 
-```{r}
-library(fBasics)
+```{r, eval=TRUE, include=FALSE}
 colnames(housing_data) <- c("Date", "Price", "# of Bedrooms", "# of Bathrooms", "Sqft of Living", "Sqft of Lot", "# of Floors", "Waterfront", "View", "Condition", "Sqft Above Ground", "Sqft of Basement", "Year Built", "Year Rennovated", "Street", "City", "Zipcode", "Country")
+```
 
+```{r}
 Attribute <- colnames(housing_data)  # Extract column names
 Code <- seq_along(Attribute)  # Create a sequence for the codes
 
@@ -254,18 +274,23 @@ housing_data3 = housing_data[-c(1:18)]
 housing_data2 = housing_data[-c(1, 15:18)]
 bstats = basicStats (housing_data2)[c("Mean", "Stdev", "Median", "Minimum", "Maximum",
 "NAs"), ]
+```
+
+```{r, eval=TRUE, include=FALSE}
 m<-matrix(1:ncol(bstats), 3)
 for (i in 1:ncol(m)) {
 cat(kable(bstats[, m[, i]], "latex", booktabs = TRUE, digits = 2, ), "\\newline")
 }
+```
 
+```{r, eval=TRUE, include=FALSE}
 print(kable(summary(bstats), format = "pipe", digits = 2))
 
 summary_table <- as.data.frame(summary(bstats))
 #gt(summary_table)
 ```
 
-```{r}
+```{r, eval=TRUE, include=FALSE}
 summary_stats <- bstats %>%
   summarise(across(everything(), list(
     Min = ~min(.x, na.rm = TRUE),
@@ -284,7 +309,8 @@ summary_long <- summary_stats %>%
 
 print(summary_long)
 ```
-```{r}
+
+```{r, eval=TRUE, include=FALSE}
 summary_long <- summary_stats %>%
   pivot_longer(cols = everything(), names_to = c("Attribute", "Statistic"), names_sep = "_") %>%
   pivot_wider(names_from = "Attribute", values_from = "value") %>%
