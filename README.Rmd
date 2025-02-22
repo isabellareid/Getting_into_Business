@@ -38,7 +38,9 @@ library(fBasics)
 ```{r}
 # Define the dataset to download
 dataset <- "fratzcan/usa-house-prices"
+```
 
+```{r, eval=TRUE, include=FALSE}
 # Create a system command to download the dataset
 system(paste("kaggle datasets download -d", dataset, "--unzip"))
 ```
@@ -52,16 +54,24 @@ destination_file <- "usa-house-prices.zip"
 
 # Download the dataset
 download.file(dataset_url, destfile = destination_file, mode = "wb")
+```
 
+```{r, eval=TRUE, include=FALSE}
 # Extract the dataset
 unzip(destination_file, exdir = "usa-house-prices")
+```
 
+```{r, eval=TRUE, include=FALSE}
 # List extracted files
 list.files("usa-house-prices")
+```
 
+```{r, echo=FALSE}
 #Import dataset
 housing_data <- read.csv ("USA Housing Dataset.csv", stringsAsFactors = FALSE )
+```
 
+```{r, eval=TRUE, include=FALSE}
 #getwd()
 ```
 
@@ -79,7 +89,7 @@ str(housing_data)
 #View(housing_data)
 
 #List column names 
-names(housing_data)
+#names(housing_data)
 
 ```
 

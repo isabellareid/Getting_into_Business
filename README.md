@@ -6,9 +6,6 @@ README
 ``` r
 # Define the dataset to download
 dataset <- "fratzcan/usa-house-prices"
-
-# Create a system command to download the dataset
-system(paste("kaggle datasets download -d", dataset, "--unzip"))
 ```
 
 ``` r
@@ -20,21 +17,6 @@ destination_file <- "usa-house-prices.zip"
 
 # Download the dataset
 download.file(dataset_url, destfile = destination_file, mode = "wb")
-
-# Extract the dataset
-unzip(destination_file, exdir = "usa-house-prices")
-
-# List extracted files
-list.files("usa-house-prices")
-```
-
-    ## [1] "USA Housing Dataset.csv"
-
-``` r
-#Import dataset
-housing_data <- read.csv ("USA Housing Dataset.csv", stringsAsFactors = FALSE )
-
-#getwd()
 ```
 
     ##                  date   price bedrooms bathrooms sqft_living sqft_lot floors
@@ -114,12 +96,6 @@ housing_data <- read.csv ("USA Housing Dataset.csv", stringsAsFactors = FALSE )
     ##  $ city         : chr  "Seattle" "Carnation" "Issaquah" "Seattle" ...
     ##  $ statezip     : chr  "WA 98103" "WA 98014" "WA 98029" "WA 98117" ...
     ##  $ country      : chr  "USA" "USA" "USA" "USA" ...
-
-    ##  [1] "date"          "price"         "bedrooms"      "bathrooms"    
-    ##  [5] "sqft_living"   "sqft_lot"      "floors"        "waterfront"   
-    ##  [9] "view"          "condition"     "sqft_above"    "sqft_basement"
-    ## [13] "yr_built"      "yr_renovated"  "street"        "city"         
-    ## [17] "statezip"      "country"
 
 ## Understanding the Data
 
