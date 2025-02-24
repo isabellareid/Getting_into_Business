@@ -19,98 +19,20 @@ destination_file <- "usa-house-prices.zip"
 download.file(dataset_url, destfile = destination_file, mode = "wb")
 ```
 
-    ##                  date   price bedrooms bathrooms sqft_living sqft_lot floors
-    ## 1 2014-05-09 00:00:00  376000        3      2.00        1340     1384      3
-    ## 2 2014-05-09 00:00:00  800000        4      3.25        3540   159430      2
-    ## 3 2014-05-09 00:00:00 2238888        5      6.50        7270   130017      2
-    ## 4 2014-05-09 00:00:00  324000        3      2.25         998      904      2
-    ## 5 2014-05-10 00:00:00  549900        5      2.75        3060     7015      1
-    ## 6 2014-05-10 00:00:00  320000        3      2.50        2130     6969      2
-    ##   waterfront view condition sqft_above sqft_basement yr_built yr_renovated
-    ## 1          0    0         3       1340             0     2008            0
-    ## 2          0    0         3       3540             0     2007            0
-    ## 3          0    0         3       6420           850     2010            0
-    ## 4          0    0         3        798           200     2007            0
-    ## 5          0    0         5       1600          1460     1979            0
-    ## 6          0    0         3       2130             0     2003            0
-    ##                       street         city statezip country
-    ## 1    9245-9249 Fremont Ave N      Seattle WA 98103     USA
-    ## 2           33001 NE 24th St    Carnation WA 98014     USA
-    ## 3           7070 270th Pl SE     Issaquah WA 98029     USA
-    ## 4             820 NW 95th St      Seattle WA 98117     USA
-    ## 5          10834 31st Ave SW      Seattle WA 98146     USA
-    ## 6 Cedar to Green River Trail Maple Valley WA 98038     USA
+## Part 1
 
-    ##      date               price             bedrooms     bathrooms    
-    ##  Length:4140        Min.   :       0   Min.   :0.0   Min.   :0.000  
-    ##  Class :character   1st Qu.:  320000   1st Qu.:3.0   1st Qu.:1.750  
-    ##  Mode  :character   Median :  460000   Median :3.0   Median :2.250  
-    ##                     Mean   :  553063   Mean   :3.4   Mean   :2.163  
-    ##                     3rd Qu.:  659125   3rd Qu.:4.0   3rd Qu.:2.500  
-    ##                     Max.   :26590000   Max.   :8.0   Max.   :6.750  
-    ##   sqft_living       sqft_lot           floors        waterfront      
-    ##  Min.   :  370   Min.   :    638   Min.   :1.000   Min.   :0.000000  
-    ##  1st Qu.: 1470   1st Qu.:   5000   1st Qu.:1.000   1st Qu.:0.000000  
-    ##  Median : 1980   Median :   7676   Median :1.500   Median :0.000000  
-    ##  Mean   : 2144   Mean   :  14698   Mean   :1.514   Mean   :0.007488  
-    ##  3rd Qu.: 2620   3rd Qu.:  11000   3rd Qu.:2.000   3rd Qu.:0.000000  
-    ##  Max.   :10040   Max.   :1074218   Max.   :3.500   Max.   :1.000000  
-    ##       view          condition       sqft_above   sqft_basement   
-    ##  Min.   :0.0000   Min.   :1.000   Min.   : 370   Min.   :   0.0  
-    ##  1st Qu.:0.0000   1st Qu.:3.000   1st Qu.:1190   1st Qu.:   0.0  
-    ##  Median :0.0000   Median :3.000   Median :1600   Median :   0.0  
-    ##  Mean   :0.2466   Mean   :3.452   Mean   :1831   Mean   : 312.3  
-    ##  3rd Qu.:0.0000   3rd Qu.:4.000   3rd Qu.:2310   3rd Qu.: 602.5  
-    ##  Max.   :4.0000   Max.   :5.000   Max.   :8020   Max.   :4820.0  
-    ##     yr_built     yr_renovated       street              city          
-    ##  Min.   :1900   Min.   :   0.0   Length:4140        Length:4140       
-    ##  1st Qu.:1951   1st Qu.:   0.0   Class :character   Class :character  
-    ##  Median :1976   Median :   0.0   Mode  :character   Mode  :character  
-    ##  Mean   :1971   Mean   : 808.4                                        
-    ##  3rd Qu.:1997   3rd Qu.:1999.0                                        
-    ##  Max.   :2014   Max.   :2014.0                                        
-    ##    statezip           country         
-    ##  Length:4140        Length:4140       
-    ##  Class :character   Class :character  
-    ##  Mode  :character   Mode  :character  
-    ##                                       
-    ##                                       
-    ## 
+### Understanding the Housing Data
 
-    ## 'data.frame':    4140 obs. of  18 variables:
-    ##  $ date         : chr  "2014-05-09 00:00:00" "2014-05-09 00:00:00" "2014-05-09 00:00:00" "2014-05-09 00:00:00" ...
-    ##  $ price        : num  376000 800000 2238888 324000 549900 ...
-    ##  $ bedrooms     : num  3 4 5 3 5 3 4 4 3 4 ...
-    ##  $ bathrooms    : num  2 3.25 6.5 2.25 2.75 2.5 2 1 2.5 2.5 ...
-    ##  $ sqft_living  : int  1340 3540 7270 998 3060 2130 2520 1940 1350 2160 ...
-    ##  $ sqft_lot     : int  1384 159430 130017 904 7015 6969 6000 9533 1250 5298 ...
-    ##  $ floors       : num  3 2 2 2 1 2 1 1 3 2.5 ...
-    ##  $ waterfront   : int  0 0 0 0 0 0 0 0 0 0 ...
-    ##  $ view         : int  0 0 0 0 0 0 0 0 0 0 ...
-    ##  $ condition    : int  3 3 3 3 5 3 3 3 3 4 ...
-    ##  $ sqft_above   : int  1340 3540 6420 798 1600 2130 1400 1080 1270 2160 ...
-    ##  $ sqft_basement: int  0 0 850 200 1460 0 1120 860 80 0 ...
-    ##  $ yr_built     : int  2008 2007 2010 2007 1979 2003 1921 1962 2006 1902 ...
-    ##  $ yr_renovated : int  0 0 0 0 0 0 2007 2003 0 0 ...
-    ##  $ street       : chr  "9245-9249 Fremont Ave N" "33001 NE 24th St" "7070 270th Pl SE" "820 NW 95th St" ...
-    ##  $ city         : chr  "Seattle" "Carnation" "Issaquah" "Seattle" ...
-    ##  $ statezip     : chr  "WA 98103" "WA 98014" "WA 98029" "WA 98117" ...
-    ##  $ country      : chr  "USA" "USA" "USA" "USA" ...
-
-## Understanding the Data
-
-### When was the data acquired?
+**When was the data acquired?**
 
 The data was gathered over the period of time from May 2, 2014 and July
 10, 2014. The data was uploaded to Kaggle. The date this data was first
-accessed for this analysis was February 12, 2025. The dataset has the
-min date of 2014-05-02 00:00:00
+accessed for this analysis was February 12, 2025.
 
-### Where was the data acquired?
+**Where was the data acquired?**
 
-The data was acquired from Zillow from several different cities in
-Washington State. The data was then uploaded to Kaggle. Below is a table
-that displays the number of houses in each city in Washington:
+The data consists of housing prices from various cities in Washington,
+US. The cities are displayed in a frequency table:
 
 | City               | Frequency |
 |:-------------------|----------:|
@@ -158,30 +80,37 @@ that displays the number of houses in each city in Washington:
 | Woodinville        |       103 |
 | Yarrow Point       |         4 |
 
-### How was the data acquired?
+**How was the data acquired?**
 
-### What are the attributes of this dataset?
+The dataset was acquired from Kaggle. Kaggle does not provide any
+additional informaation about the source the data was collected from.
+There are no links to original publications or projects from which the
+dataset was derived.
+
+**What are the attributes of this dataset?**
 
 The dataset contains eighteen different attributes. This section
-presents the attributes that appear in the dataset. First, we specify
-what each attribute is with descriptions and their data type. Then, we
-provide a codebook that specifies a number with each individual
-attribute. These numbers will be useful in determining which attribute
-is correlated with the summary statistics displayed in the last table.
+presents the attributes that appear in the dataset.
+
+First, we specify what each attribute is with descriptions and their
+data type (see Table 1). Then, we provide a codebook that specifies a
+number with each individual attribute. These numbers will be useful in
+determining which attribute is correlated with the summary statistics
+displayed in Table 2.
 
 ``` r
 # Create a data frame with attribute names and descriptions
 attributes_table <- data.frame(
-  Attribute = c("date", "price", "bedrooms", "bathrooms", "sqft_living",
-                "sqft_lot", "floors", "waterfront", "view", "condition",  "sqft_above", "sqft_basement", "yr_built", "yr_renovated", "street", "city", "statezip", "country"),
+  Attribute = c("Date", "Price", "Bedrooms", "Bathrooms", "Sqft living",
+                "Sqft Lot", "Floors", "Waterfront", "View", "Condition",  "Sqft Above", "Sqft Basement", "Year Built", "Year Rennovated", "Street", "City", "Statezip", "Country"),
 
   Description = c("Date when the house was sold",
                   "Sale price of the house",
-                  "Number of bedrooms",
-                  "Number of bathrooms",
+                  "Number of bedrooms the house has",
+                  "Number of bathrooms the house has",
                   "Living area in square feet",
                   "Lot area in square feet",
-                  "Number of floors",
+                  "Number of floors the house has",
                   "Whether the house is waterfront (1: Yes, 0: No)",
                   "Number of times the house has been viewed",
                   "Condition of the house (1-5 scale)",
@@ -208,7 +137,7 @@ attributes_table$Type = c ( "character", "double", "double", "double",
 
 
 # Generate a well-formatted table
-styled_table <- kable(attributes_table, format = "html", caption = "📌 USA Housing Data") %>%
+styled_table <- kable(attributes_table, format = "html", caption = "Table 1: 📌 USA Housing Data") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
                 full_width = F, position = "center") %>%
   column_spec(1, bold = TRUE, color = "black") %>%
@@ -222,7 +151,7 @@ styled_table
 
 <table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
-📌 USA Housing Data
+Table 1: 📌 USA Housing Data
 </caption>
 <thead>
 <tr>
@@ -240,7 +169,7 @@ Type
 <tbody>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-date
+Date
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Date when the house was sold
@@ -251,7 +180,7 @@ character
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-price
+Price
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Sale price of the house
@@ -262,10 +191,10 @@ double
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-bedrooms
+Bedrooms
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
-Number of bedrooms
+Number of bedrooms the house has
 </td>
 <td style="text-align:left;width: 40em; ">
 double
@@ -273,10 +202,10 @@ double
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-bathrooms
+Bathrooms
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
-Number of bathrooms
+Number of bathrooms the house has
 </td>
 <td style="text-align:left;width: 40em; ">
 double
@@ -284,7 +213,7 @@ double
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-sqft_living
+Sqft living
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Living area in square feet
@@ -295,7 +224,7 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-sqft_lot
+Sqft Lot
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Lot area in square feet
@@ -306,10 +235,10 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-floors
+Floors
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
-Number of floors
+Number of floors the house has
 </td>
 <td style="text-align:left;width: 40em; ">
 double
@@ -317,7 +246,7 @@ double
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-waterfront
+Waterfront
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Whether the house is waterfront (1: Yes, 0: No)
@@ -328,7 +257,7 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-view
+View
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Number of times the house has been viewed
@@ -339,7 +268,7 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-condition
+Condition
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Condition of the house (1-5 scale)
@@ -350,7 +279,7 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-sqft_above
+Sqft Above
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Square footage of the house above ground
@@ -361,7 +290,7 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-sqft_basement
+Sqft Basement
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Square footage of the basement
@@ -372,7 +301,7 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-yr_built
+Year Built
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Year the house was built
@@ -383,7 +312,7 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-yr_renovated
+Year Rennovated
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Year of renovation (0 if never renovated)
@@ -394,7 +323,7 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-street
+Street
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Street address of house
@@ -405,7 +334,7 @@ character
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-city
+City
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 City of the house location
@@ -416,7 +345,7 @@ character
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-statezip
+Statezip
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Zip code of the house location
@@ -427,7 +356,7 @@ character
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;color: black !important;">
-country
+Country
 </td>
 <td style="text-align:left;font-style: italic;color: blue !important;">
 Country of the house location
@@ -439,7 +368,21 @@ character
 </tbody>
 </table>
 
+# Part 2
+
 ## Summary Statistics
+
+``` r
+# Create a summary table, ensuring NAs are handled correctly
+summary_table <- data.frame(
+  Attribute = colnames(numeric_data),
+  Min = sapply(numeric_data, function(x) min(x, na.rm = TRUE)),
+  Max = sapply(numeric_data, function(x) max(x, na.rm = TRUE)),
+  Mean = sapply(numeric_data, function(x) mean(x, na.rm = TRUE)),
+  Median = sapply(numeric_data, function(x) median(x, na.rm = TRUE)),
+  SD = sapply(numeric_data, function(x) sd(x, na.rm = TRUE))
+)
+```
 
 ``` r
 Attribute <- colnames(housing_data)  # Extract column names
@@ -492,7 +435,7 @@ Price
 3
 </td>
 <td style="text-align:left;">
-\# of Bedrooms
+Number of Bedrooms
 </td>
 </tr>
 <tr>
@@ -500,7 +443,7 @@ Price
 4
 </td>
 <td style="text-align:left;">
-\# of Bathrooms
+Number of Bathrooms
 </td>
 </tr>
 <tr>
@@ -524,7 +467,7 @@ Sqft of Lot
 7
 </td>
 <td style="text-align:left;">
-\# of Floors
+Number of Floors
 </td>
 </tr>
 <tr>
@@ -628,7 +571,7 @@ bstats = basicStats (housing_data2)[c("Mean", "Stdev", "Median", "Minimum", "Max
 
 ``` r
 summary_long %>%
-  kable(caption = "Summary Statistics for Housing Data", longtable = TRUE, align = "c") %>%
+  kable(caption = "Table 2: Summary Statistics for Housing Data", longtable = TRUE, align = "c") %>%
   kable_styling(latex_options = c("hold_position", "repeat_header")) %>%
   row_spec(0, bold = TRUE) %>%  # Bold column names (first row)
   row_spec(1:nrow(summary_long), font_size = 12) %>%  # Adjust font size for summary rows
@@ -637,7 +580,7 @@ summary_long %>%
 
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Summary Statistics for Housing Data
+Table 2: Summary Statistics for Housing Data
 </caption>
 <thead>
 <tr>
@@ -996,3 +939,46 @@ SD
 </tr>
 </tbody>
 </table>
+
+# Part 3
+
+## Expanding Investment Knowledge
+
+**Why would this dataset be useful?**
+
+This additional dataset consists of the all-transactions house price
+index for Washington, US, recorded quarterly, from 1975 to present.
+House price index (HPI) is an economic indicator that measures the
+change in average residential property prices over time. It shows how
+much house prices are rising or falling in a given region, usually
+calculated by tracking repeat sales of the same properties over time. It
+is considered a key tool for understanding housing market trends and
+affordability.
+
+This dataset would be useful because the original dataset consists of
+data from Washington, US only from May-July 2014, so it would be useful
+to compare the data with the HPI in Washington throughout the years to
+see whether housing prices in the state were relatively low or high at
+that time.
+
+**How could it complement the data you’re currently analyzing?**
+
+This dataset could complement the data we are currently analyzing to
+show the housing price index in the year 2014. We could compare the
+change in HPI from Quarter 2 and Quarter 3 to our own dataset, since our
+data was recorded from the months of May to August, which covers both
+quarters 2 and 3. This will help us analyze and compare the summary
+statistics of our data to the HPI of Washington in 2014.
+
+In addtion, we could use this dataset to compare the trends in housing
+prices over the years. The HPI shows the average original residential
+property prices have risen over time in Washington. It shows a decline
+following the 2008 recession, with the lowest peak displayed in 2012,
+then a gradual increase. The HPI had not yet hit the pre-recession high
+of 498.06 from 2007. It hit this high again in 2016 and has continued to
+increase since then. Our data is from 2014, so the data we collected
+falls in the recovering years of recession, showcasing unique trends.
+
+**Link to dataset**
+
+[Additional Dataset](https://fred.stlouisfed.org/series/WASTHPI#)

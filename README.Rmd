@@ -78,9 +78,9 @@ housing_data <- read.csv ("USA Housing Dataset.csv", stringsAsFactors = FALSE )
 
 
 ```{r, echo =FALSE}
-head(housing_data)
-summary(housing_data)
-str(housing_data)
+#head(housing_data)
+#summary(housing_data)
+#str(housing_data)
 
 #install.packages("DT")
 #library(DT)
@@ -94,7 +94,8 @@ str(housing_data)
 ```
 
 
-## Understanding the Data
+## Part 1
+### Understanding the Housing Data
 ```{r, eval=TRUE, include=FALSE}
 
 
@@ -118,36 +119,40 @@ where <- city_table
 #View(city_table)
 
 ```
-### When was the data acquired?
+**When was the data acquired?**
 
 The data was gathered over the period of time from May 2, 2014 and July 10, 2014. The data was uploaded to Kaggle. The date this data was first accessed for this analysis was February 12, 2025. 
-The dataset has the min date of `r mind`
 
-### Where was the data acquired?
 
-The data was acquired from Zillow from several different cities in Washington State.  The data was then uploaded to Kaggle. Below is a table that displays the number of houses in each city in Washington:  `r knitr::kable(where)`
+**Where was the data acquired?**
 
- 
+The data consists of housing prices from various cities in Washington, US. The cities are displayed in a frequency table:  `r knitr::kable(where)`
 
-### How was the data acquired?
 
-### What are the attributes of this dataset?
+**How was the data acquired?**
+
+The dataset was acquired from Kaggle. Kaggle does not provide any additional informaation about the source the data was collected from. There are no links to original publications or projects from which the dataset was derived. 
+
+
+**What are the attributes of this dataset?**
+
 The dataset contains eighteen different attributes. This section presents the attributes that appear in the dataset. 
-First, we specify what each attribute is with descriptions and their data type. Then, we provide a codebook that specifies a number with each individual attribute. These numbers will be useful in determining which attribute is correlated with the summary statistics displayed in the last table.  
+
+First, we specify what each attribute is with descriptions and their data type (see Table 1). Then, we provide a codebook that specifies a number with each individual attribute. These numbers will be useful in determining which attribute is correlated with the summary statistics displayed in Table 2.  
 
 ```{r}
 # Create a data frame with attribute names and descriptions
 attributes_table <- data.frame(
-  Attribute = c("date", "price", "bedrooms", "bathrooms", "sqft_living",
-                "sqft_lot", "floors", "waterfront", "view", "condition",  "sqft_above", "sqft_basement", "yr_built", "yr_renovated", "street", "city", "statezip", "country"),
+  Attribute = c("Date", "Price", "Bedrooms", "Bathrooms", "Sqft living",
+                "Sqft Lot", "Floors", "Waterfront", "View", "Condition",  "Sqft Above", "Sqft Basement", "Year Built", "Year Rennovated", "Street", "City", "Statezip", "Country"),
 
   Description = c("Date when the house was sold",
                   "Sale price of the house",
-                  "Number of bedrooms",
-                  "Number of bathrooms",
+                  "Number of bedrooms the house has",
+                  "Number of bathrooms the house has",
                   "Living area in square feet",
                   "Lot area in square feet",
-                  "Number of floors",
+                  "Number of floors the house has",
                   "Whether the house is waterfront (1: Yes, 0: No)",
                   "Number of times the house has been viewed",
                   "Condition of the house (1-5 scale)",
@@ -209,7 +214,7 @@ attributes_table$Type = c ( "character", "double", "double", "double",
 
 
 # Generate a well-formatted table
-styled_table <- kable(attributes_table, format = "html", caption = "📌 USA Housing Data") %>%
+styled_table <- kable(attributes_table, format = "html", caption = "Table 1: 📌 USA Housing Data") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
                 full_width = F, position = "center") %>%
   column_spec(1, bold = TRUE, color = "black") %>%
@@ -227,6 +232,7 @@ styled_table
 ```
 
 
+# Part 2
 ## Summary Statistics
 
 ```{r, eval=TRUE, include=FALSE}
@@ -239,7 +245,9 @@ describe(housing_data$price)
 
 # Select only numeric columns
 numeric_data <- housing_data[sapply(housing_data, is.numeric)]
+```
 
+```{r}
 # Create a summary table, ensuring NAs are handled correctly
 summary_table <- data.frame(
   Attribute = colnames(numeric_data),
@@ -249,7 +257,8 @@ summary_table <- data.frame(
   Median = sapply(numeric_data, function(x) median(x, na.rm = TRUE)),
   SD = sapply(numeric_data, function(x) sd(x, na.rm = TRUE))
 )
-
+```
+```{r, eval=TRUE, include=FALSE}
 # Print the corrected summary table
 print(summary_table)
 ```
@@ -258,7 +267,7 @@ print(summary_table)
 
 
 ```{r, eval=TRUE, include=FALSE}
-colnames(housing_data) <- c("Date", "Price", "# of Bedrooms", "# of Bathrooms", "Sqft of Living", "Sqft of Lot", "# of Floors", "Waterfront", "View", "Condition", "Sqft Above Ground", "Sqft of Basement", "Year Built", "Year Rennovated", "Street", "City", "Zipcode", "Country")
+colnames(housing_data) <- c("Date", "Price", "Number of Bedrooms", "Number of Bathrooms", "Sqft of Living", "Sqft of Lot", "Number of Floors", "Waterfront", "View", "Condition", "Sqft Above Ground", "Sqft of Basement", "Year Built", "Year Rennovated", "Street", "City", "Zipcode", "Country")
 ```
 
 ```{r}
@@ -331,7 +340,7 @@ print(summary_long)
 
 ```{r}
 summary_long %>%
-  kable(caption = "Summary Statistics for Housing Data", longtable = TRUE, align = "c") %>%
+  kable(caption = "Table 2: Summary Statistics for Housing Data", longtable = TRUE, align = "c") %>%
   kable_styling(latex_options = c("hold_position", "repeat_header")) %>%
   row_spec(0, bold = TRUE) %>%  # Bold column names (first row)
   row_spec(1:nrow(summary_long), font_size = 12) %>%  # Adjust font size for summary rows
@@ -339,8 +348,25 @@ summary_long %>%
 ```
 
 
+# Part 3
+## Expanding Investment Knowledge 
 
+**Why would this dataset be useful?**
 
+This additional dataset consists of the all-transactions house price index for Washington, US, recorded quarterly, from 1975 to present. House price index (HPI) is an economic indicator that measures the change in average residential property prices over time. It shows how much house prices are rising or falling in a given region, usually calculated by tracking repeat sales of the same properties over time. It is considered a key tool for understanding housing market trends and affordability. 
+
+This dataset would be useful because the original dataset consists of data from Washington, US only from May-July 2014, so it would be useful to compare the data with the HPI in Washington throughout the years to see whether housing prices in the state were relatively low or high at that time.
+ 
+
+**How could it complement the data you're currently analyzing?** 
+
+This dataset could complement the data we are currently analyzing to show the housing price index in the year 2014. We could compare the change in HPI from Quarter 2 and Quarter 3 to our own dataset, since our data was recorded from the months of May to August, which covers both quarters 2 and 3. This will help us analyze and compare the summary statistics of our data to the HPI of Washington in 2014. 
+
+In addtion, we could use this dataset to compare the trends in housing prices over the years. The HPI shows the average original residential property prices have risen over time in Washington. It shows a decline following the 2008 recession, with the lowest peak displayed in 2012, then a gradual increase. The HPI had not yet hit the pre-recession high of 498.06 from 2007. It hit this high again in 2016 and has continued to increase since then. Our data is from 2014, so the data we collected falls in the recovering years of recession, showcasing unique trends. 
+
+**Link to dataset**
+
+[Additional Dataset](https://fred.stlouisfed.org/series/WASTHPI#)
 
 
 
