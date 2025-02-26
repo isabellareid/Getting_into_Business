@@ -705,6 +705,45 @@ transparent (less concentrated). Figure 1 also depicts outliers at the
 bottom the graph, where the prices of the houses are significantly
 lower.
 
+``` r
+plot(housing_data$`4`, log_prices, 
+     main="Figure 2. House Price vs Number of Bathrooms (Log-transformed)", 
+     xlab = "Bathrooms", ylab = "Log of House Price + 1", 
+     pch=19, cex = 1.5, col = rgb(0.2, 0.5, 0.8, 0.6), 
+     xlim = c(min(housing_data$`4`), 
+              max(housing_data$`4`)), 
+     ylim = range_log_prices)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+
+Figure 2 shows the relationship between the number of bathrooms the
+house has and the price of the house, scaled to the log(x+1). It seems
+like there the houses become more expensive as the number of bathrooms
+increase. There is a large concentration around 1.5 to 3.5 bathrooms,
+indicating the most houses within this range. There are outliers
+depicted at the bottom of the scatter plot which show that there are
+houses with lower prices than the majority of the dataset. Once we get
+4.5 bathrooms, the points become more transparent, showcasing that the
+number of bathrooms is rare, even within the most expensive houses.
+
+``` r
+hist(housing_data$`10`, 
+     main= "Figure 3. Histogram of Housing Condition", 
+     xlab= "Condition (1-5)", 
+     ylab = "Frequency", 
+     col = rgb(0.2, 0.5, 0.8))
+```
+
+![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+
+Figure 3 shows the frequency of the condition of the houses in the
+dataset. The condition variable is shown on a 1-5 scale: 1 being the
+worst and 5 being the best. Here we can see that the houses in the
+dataset are mostly rated 3, with 4 being the next frequent value. By
+looking at this visualization, we can understand the general quality of
+houses in Washington, US. There are very few houses in poor condition.
+
 **Identifying Missing Values (NAs)**
 
 In our code for generating the summary statistics table, we take into
