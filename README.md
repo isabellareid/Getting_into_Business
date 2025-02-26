@@ -19,6 +19,11 @@ destination_file <- "usa-house-prices.zip"
 download.file(dataset_url, destfile = destination_file, mode = "wb")
 ```
 
+``` r
+#Import dataset
+housing_data <- read.csv ("USA Housing Dataset.csv", stringsAsFactors = FALSE )
+```
+
 ## Part 1
 
 ### Understanding the Housing Data
@@ -391,7 +396,7 @@ Code <- seq_along(Attribute)  # Create a sequence for the codes
 # Create a proper data frame
 df <- data.frame(Code, Attribute, stringsAsFactors = FALSE)
 
-# Generate a well-formatted table
+# Generate a well-formatted table that links code numbers to each of the attributes in the dataset
 df %>% 
   kable(caption = "Attribute Codes for Housing Data", longtable = TRUE) %>%
   kable_styling(latex_options = c("hold_position", "repeat_header")) %>%
@@ -939,6 +944,16 @@ SD
 </tr>
 </tbody>
 </table>
+
+**Identifying Missing Values (NAs)**
+
+In our code for generating the summary statistics table, we take into
+account the null values for the character/categorical attributes and
+make sure to exclude them from our summary statistic table. Our code
+numbers align with the numbers presented in our coded attribute table;
+there are five categorical attributes, meaning that there is no numeric
+data associated with them. We excluded these from the summary statistic
+table through our code.
 
 # Part 3
 
