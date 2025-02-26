@@ -681,21 +681,29 @@ log_prices <- log1p(housing_data$`2`)
 
 # Check the range of log-transformed prices
 range_log_prices <- range(log_prices, na.rm = TRUE)
-#print(range_log_prices)
 
-plot(housing_data$`3`, log_prices, main="Figure 1. House Price vs Number of Bedrooms (Log-transformed)", xlab = "Bedrooms", ylab = "Log of House Price + 1", pch=19, cex = 1.5, col = rgb(0.2, 0.5, 0.8, 0.6), xlim = c(min(housing_data$`3`), max(housing_data$`3`)), ylim = range_log_prices)
+
+plot(housing_data$`3`, log_prices, 
+     main="Figure 1. House Price vs Number of Bedrooms (Log-transformed)", 
+     xlab = "Bedrooms", ylab = "Log of House Price + 1", 
+     pch=19, cex = 1.5, col = rgb(0.2, 0.5, 0.8, 0.6), 
+     xlim = c(min(housing_data$`3`), 
+              max(housing_data$`3`)), 
+     ylim = range_log_prices)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- --> Figure 1
-shows the relationship between the number of bedrooms each house has and
-the price of the house, scaled to the log (x+1) so it easier to visually
-understand and to eliminate the issue with values that were zero. It is
-clear that there is a higher concentration when the houses have three to
-six bedrooms by the cluster of points in the middle of the scatter plot,
-indicating the most expensive houses. Not many houses have zero or eight
-bedrooms, so the points appear more transparent (less concentrated).
-Figure 1 also depicts outliers at the bottom the graph, where the prices
-of the houses are significantly lower.
+![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+
+Figure 1 shows the relationship between the number of bedrooms each
+house has and the price of the house, scaled to the log (x+1) so it
+easier to visually understand and to eliminate the issue with values
+that were zero. It is clear that there is a higher concentration when
+the houses have three to six bedrooms by the cluster of points in the
+middle of the scatter plot, indicating the most expensive houses. Not
+many houses have zero or eight bedrooms, so the points appear more
+transparent (less concentrated). Figure 1 also depicts outliers at the
+bottom the graph, where the prices of the houses are significantly
+lower.
 
 **Identifying Missing Values (NAs)**
 
