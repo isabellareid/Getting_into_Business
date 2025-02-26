@@ -103,276 +103,6 @@ number with each individual attribute. These numbers will be useful in
 determining which attribute is correlated with the summary statistics
 displayed in Table 2.
 
-``` r
-# Create a data frame with attribute names and descriptions
-attributes_table <- data.frame(
-  Attribute = c("Date", "Price", "Bedrooms", "Bathrooms", "Sqft living",
-                "Sqft Lot", "Floors", "Waterfront", "View", "Condition",  "Sqft Above", "Sqft Basement", "Year Built", "Year Rennovated", "Street", "City", "Statezip", "Country"),
-
-  Description = c("Date when the house was sold",
-                  "Sale price of the house",
-                  "Number of bedrooms the house has",
-                  "Number of bathrooms the house has",
-                  "Living area in square feet",
-                  "Lot area in square feet",
-                  "Number of floors the house has",
-                  "Whether the house is waterfront (1: Yes, 0: No)",
-                  "Number of times the house has been viewed",
-                  "Condition of the house (1-5 scale)",
-                  "Square footage of the house above ground",
-                  "Square footage of the basement",
-                  "Year the house was built",
-                  "Year of renovation (0 if never renovated)",
-                  "Street address of house",
-                  "City of the house location",
-                  "Zip code of the house location",
-                  "Country of the house location")
-)
-```
-
-``` r
-# Add a column corresponding to each of the attributes data type 
-attributes_table$Type = c ( "character", "double", "double", "double",
-                "integer", "integer", "double", "integer", "integer", "integer",
-                "integer", "integer", "integer", "integer",
-                "character", "character", "character", "character")
-
-
-
-
-
-# Generate a well-formatted table
-styled_table <- kable(attributes_table, format = "html", caption = "Table 1: 📌 USA Housing Data") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-                full_width = F, position = "center") %>%
-  column_spec(1, bold = TRUE, color = "black") %>%
-  column_spec(2, italic = TRUE, color = "blue") %>%
-  column_spec(3, width = "40em") %>%
-  row_spec(0, bold = TRUE, color = "white", background = "black")
-
-# Display the table
-styled_table
-```
-
-<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<caption>
-Table 1: 📌 USA Housing Data
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;font-weight: bold;color: white !important;background-color: black !important;">
-Attribute
-</th>
-<th style="text-align:left;font-weight: bold;color: white !important;background-color: black !important;">
-Description
-</th>
-<th style="text-align:left;font-weight: bold;color: white !important;background-color: black !important;">
-Type
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Date
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Date when the house was sold
-</td>
-<td style="text-align:left;width: 40em; ">
-character
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Price
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Sale price of the house
-</td>
-<td style="text-align:left;width: 40em; ">
-double
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Bedrooms
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Number of bedrooms the house has
-</td>
-<td style="text-align:left;width: 40em; ">
-double
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Bathrooms
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Number of bathrooms the house has
-</td>
-<td style="text-align:left;width: 40em; ">
-double
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Sqft living
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Living area in square feet
-</td>
-<td style="text-align:left;width: 40em; ">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Sqft Lot
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Lot area in square feet
-</td>
-<td style="text-align:left;width: 40em; ">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Floors
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Number of floors the house has
-</td>
-<td style="text-align:left;width: 40em; ">
-double
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Waterfront
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Whether the house is waterfront (1: Yes, 0: No)
-</td>
-<td style="text-align:left;width: 40em; ">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-View
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Number of times the house has been viewed
-</td>
-<td style="text-align:left;width: 40em; ">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Condition
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Condition of the house (1-5 scale)
-</td>
-<td style="text-align:left;width: 40em; ">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Sqft Above
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Square footage of the house above ground
-</td>
-<td style="text-align:left;width: 40em; ">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Sqft Basement
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Square footage of the basement
-</td>
-<td style="text-align:left;width: 40em; ">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Year Built
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Year the house was built
-</td>
-<td style="text-align:left;width: 40em; ">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Year Rennovated
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Year of renovation (0 if never renovated)
-</td>
-<td style="text-align:left;width: 40em; ">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Street
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Street address of house
-</td>
-<td style="text-align:left;width: 40em; ">
-character
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-City
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-City of the house location
-</td>
-<td style="text-align:left;width: 40em; ">
-character
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Statezip
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Zip code of the house location
-</td>
-<td style="text-align:left;width: 40em; ">
-character
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;">
-Country
-</td>
-<td style="text-align:left;font-style: italic;color: blue !important;">
-Country of the house location
-</td>
-<td style="text-align:left;width: 40em; ">
-character
-</td>
-</tr>
-</tbody>
-</table>
-
 # Part 2
 
 ## Summary Statistics
@@ -944,6 +674,28 @@ SD
 </tr>
 </tbody>
 </table>
+
+``` r
+# Apply log1p (log(x + 1)) transformation to avoid log(0) issues
+log_prices <- log1p(housing_data$`2`)
+
+# Check the range of log-transformed prices
+range_log_prices <- range(log_prices, na.rm = TRUE)
+#print(range_log_prices)
+
+plot(housing_data$`3`, log_prices, main="Figure 1. House Price vs Number of Bedrooms (Log-transformed)", xlab = "Bedrooms", ylab = "Log of House Price + 1", pch=19, cex = 1.5, col = rgb(0.2, 0.5, 0.8, 0.6), xlim = c(min(housing_data$`3`), max(housing_data$`3`)), ylim = range_log_prices)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- --> Figure 1
+shows the relationship between the number of bedrooms each house has and
+the price of the house, scaled to the log (x+1) so it easier to visually
+understand and to eliminate the issue with values that were zero. It is
+clear that there is a higher concentration when the houses have three to
+six bedrooms by the cluster of points in the middle of the scatter plot,
+indicating the most expensive houses. Not many houses have zero or eight
+bedrooms, so the points appear more transparent (less concentrated).
+Figure 1 also depicts outliers at the bottom the graph, where the prices
+of the houses are significantly lower.
 
 **Identifying Missing Values (NAs)**
 

@@ -140,7 +140,7 @@ The dataset contains eighteen different attributes. This section presents the at
 
 First, we specify what each attribute is with descriptions and their data type (see Table 1). Then, we provide a codebook that specifies a number with each individual attribute. These numbers will be useful in determining which attribute is correlated with the summary statistics displayed in Table 2.  
 
-```{r}
+```{r,eval=TRUE, include=FALSE}
 # Create a data frame with attribute names and descriptions
 attributes_table <- data.frame(
   Attribute = c("Date", "Price", "Bedrooms", "Bathrooms", "Sqft living",
@@ -202,7 +202,7 @@ print(typeof(housing_data$country))
 
 
 
-```{r}
+```{r, eval=TRUE, include=FALSE}
 # Add a column corresponding to each of the attributes data type 
 attributes_table$Type = c ( "character", "double", "double", "double",
                 "integer", "integer", "double", "integer", "integer", "integer",
@@ -346,6 +346,20 @@ summary_long %>%
   row_spec(1:nrow(summary_long), font_size = 12) %>%  # Adjust font size for summary rows
   column_spec(1, bold = TRUE)   # Bold the first column (Statistic names)
 ```
+
+```{r}
+# Apply log1p (log(x + 1)) transformation to avoid log(0) issues
+log_prices <- log1p(housing_data$`2`)
+
+# Check the range of log-transformed prices
+range_log_prices <- range(log_prices, na.rm = TRUE)
+#print(range_log_prices)
+
+plot(housing_data$`3`, log_prices, main="Figure 1. House Price vs Number of Bedrooms (Log-transformed)", xlab = "Bedrooms", ylab = "Log of House Price + 1", pch=19, cex = 1.5, col = rgb(0.2, 0.5, 0.8, 0.6), xlim = c(min(housing_data$`3`), max(housing_data$`3`)), ylim = range_log_prices)
+```
+Figure 1 shows the relationship between the number of bedrooms each house has and the price of the house, scaled to the log (x+1) so it easier to visually understand and to eliminate the issue with values that were zero. It is clear that there is a higher concentration when the houses have three to six bedrooms by the cluster of points in the middle of the scatter plot, indicating the most expensive houses. Not many houses have zero or eight bedrooms, so the points appear more transparent (less concentrated). Figure 1 also depicts outliers at the bottom the graph, where the prices of the houses are significantly lower. 
+
+
 
 **Identifying Missing Values (NAs)**
 
