@@ -103,6 +103,26 @@ number with each individual attribute. These numbers will be useful in
 determining which attribute is correlated with the summary statistics
 displayed in Table 2.
 
+    ##                   Attribute                  Mode
+    ## date                   date   2014-06-23 00:00:00
+    ## price                 price                     0
+    ## bedrooms           bedrooms                     3
+    ## bathrooms         bathrooms                   2.5
+    ## sqft_living     sqft_living                  1720
+    ## sqft_lot           sqft_lot                  5000
+    ## floors               floors                     1
+    ## waterfront       waterfront                     0
+    ## view                   view                     0
+    ## condition         condition                     3
+    ## sqft_above       sqft_above                  1200
+    ## sqft_basement sqft_basement                     0
+    ## yr_built           yr_built                  2006
+    ## yr_renovated   yr_renovated                     0
+    ## street               street 2520 Mulberry Walk NE
+    ## city                   city               Seattle
+    ## statezip           statezip              WA 98103
+    ## country             country                   USA
+
 # Part 2
 
 ## Summary Statistics
@@ -120,18 +140,36 @@ summary_table <- data.frame(
 ```
 
 ``` r
-Attribute <- colnames(housing_data)  # Extract column names
-Code <- seq_along(Attribute)  # Create a sequence for the codes
+Attribute <- c("Date of Sale", "Sale Price", "Number of Bedrooms", "Number of Bathrooms", 
+               "Square Footage of Living Space", "Square Footage of Lot", "Number of Floors", 
+               "Waterfront Property (1=Yes, 0=No)", "View Rating", "Condition Rating", 
+               "Square Footage Above Ground", "Square Footage of Basement", 
+               "Year Built", "Year Renovated", "Street Name", "City Name", "Zip Code", "Country")
 
-# Create a proper data frame
-df <- data.frame(Code, Attribute, stringsAsFactors = FALSE)
+# Generate a sequence for the codes
+Code <- seq_along(Attribute)  
 
-# Generate a well-formatted table that links code numbers to each of the attributes in the dataset
+# Manually define the data types to align with the attribute descriptions
+Type <- c("character", "double", "double", "double",
+          "integer", "integer", "double", "integer", 
+          "integer", "integer", "integer", "integer", 
+          "integer", "integer", "character", "character",
+          "character", "character")  
+
+# Ensure that all three vectors have the same length
+if (length(Code) == length(Attribute) && length(Attribute) == length(Type)) {
+  # Create a proper data frame
+  df <- data.frame(Code, Attribute, Type, stringsAsFactors = FALSE)
+} else {
+  stop("Mismatch in vector lengths! Check your Attribute and Type definitions.")
+}
+
+# Generate a well-formatted table
 df %>% 
   kable(caption = "Attribute Codes for Housing Data", longtable = TRUE) %>%
   kable_styling(latex_options = c("hold_position", "repeat_header")) %>%
   row_spec(0, bold = TRUE) %>%
-  column_spec(1, bold = TRUE)
+  column_spec(1, bold = TRUE) 
 ```
 
 <table class="table" style="margin-left: auto; margin-right: auto;">
@@ -146,6 +184,9 @@ Code
 <th style="text-align:left;font-weight: bold;">
 Attribute
 </th>
+<th style="text-align:left;font-weight: bold;">
+Type
+</th>
 </tr>
 </thead>
 <tbody>
@@ -154,7 +195,10 @@ Attribute
 1
 </td>
 <td style="text-align:left;">
-Date
+Date of Sale
+</td>
+<td style="text-align:left;">
+character
 </td>
 </tr>
 <tr>
@@ -162,7 +206,10 @@ Date
 2
 </td>
 <td style="text-align:left;">
-Price
+Sale Price
+</td>
+<td style="text-align:left;">
+double
 </td>
 </tr>
 <tr>
@@ -172,6 +219,9 @@ Price
 <td style="text-align:left;">
 Number of Bedrooms
 </td>
+<td style="text-align:left;">
+double
+</td>
 </tr>
 <tr>
 <td style="text-align:right;font-weight: bold;">
@@ -180,13 +230,19 @@ Number of Bedrooms
 <td style="text-align:left;">
 Number of Bathrooms
 </td>
+<td style="text-align:left;">
+double
+</td>
 </tr>
 <tr>
 <td style="text-align:right;font-weight: bold;">
 5
 </td>
 <td style="text-align:left;">
-Sqft of Living
+Square Footage of Living Space
+</td>
+<td style="text-align:left;">
+integer
 </td>
 </tr>
 <tr>
@@ -194,7 +250,10 @@ Sqft of Living
 6
 </td>
 <td style="text-align:left;">
-Sqft of Lot
+Square Footage of Lot
+</td>
+<td style="text-align:left;">
+integer
 </td>
 </tr>
 <tr>
@@ -204,13 +263,19 @@ Sqft of Lot
 <td style="text-align:left;">
 Number of Floors
 </td>
+<td style="text-align:left;">
+double
+</td>
 </tr>
 <tr>
 <td style="text-align:right;font-weight: bold;">
 8
 </td>
 <td style="text-align:left;">
-Waterfront
+Waterfront Property (1=Yes, 0=No)
+</td>
+<td style="text-align:left;">
+integer
 </td>
 </tr>
 <tr>
@@ -218,7 +283,10 @@ Waterfront
 9
 </td>
 <td style="text-align:left;">
-View
+View Rating
+</td>
+<td style="text-align:left;">
+integer
 </td>
 </tr>
 <tr>
@@ -226,7 +294,10 @@ View
 10
 </td>
 <td style="text-align:left;">
-Condition
+Condition Rating
+</td>
+<td style="text-align:left;">
+integer
 </td>
 </tr>
 <tr>
@@ -234,7 +305,10 @@ Condition
 11
 </td>
 <td style="text-align:left;">
-Sqft Above Ground
+Square Footage Above Ground
+</td>
+<td style="text-align:left;">
+integer
 </td>
 </tr>
 <tr>
@@ -242,7 +316,10 @@ Sqft Above Ground
 12
 </td>
 <td style="text-align:left;">
-Sqft of Basement
+Square Footage of Basement
+</td>
+<td style="text-align:left;">
+integer
 </td>
 </tr>
 <tr>
@@ -252,13 +329,19 @@ Sqft of Basement
 <td style="text-align:left;">
 Year Built
 </td>
+<td style="text-align:left;">
+integer
+</td>
 </tr>
 <tr>
 <td style="text-align:right;font-weight: bold;">
 14
 </td>
 <td style="text-align:left;">
-Year Rennovated
+Year Renovated
+</td>
+<td style="text-align:left;">
+integer
 </td>
 </tr>
 <tr>
@@ -266,7 +349,10 @@ Year Rennovated
 15
 </td>
 <td style="text-align:left;">
-Street
+Street Name
+</td>
+<td style="text-align:left;">
+character
 </td>
 </tr>
 <tr>
@@ -274,7 +360,10 @@ Street
 16
 </td>
 <td style="text-align:left;">
-City
+City Name
+</td>
+<td style="text-align:left;">
+character
 </td>
 </tr>
 <tr>
@@ -282,7 +371,10 @@ City
 17
 </td>
 <td style="text-align:left;">
-Zipcode
+Zip Code
+</td>
+<td style="text-align:left;">
+character
 </td>
 </tr>
 <tr>
@@ -291,6 +383,9 @@ Zipcode
 </td>
 <td style="text-align:left;">
 Country
+</td>
+<td style="text-align:left;">
+character
 </td>
 </tr>
 </tbody>
@@ -692,7 +787,7 @@ plot(housing_data$`3`, log_prices,
      ylim = range_log_prices)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
 
 Figure 1 shows the relationship between the number of bedrooms each
 house has and the price of the house, scaled to the log (x+1) so it
@@ -715,7 +810,7 @@ plot(housing_data$`4`, log_prices,
      ylim = range_log_prices)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
 Figure 2 shows the relationship between the number of bathrooms the
 house has and the price of the house, scaled to the log(x+1). It seems
@@ -735,7 +830,7 @@ hist(housing_data$`10`,
      col = rgb(0.2, 0.5, 0.8))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
 
 Figure 3 shows the frequency of the condition of the houses in the
 dataset. The condition variable is shown on a 1-5 scale: 1 being the

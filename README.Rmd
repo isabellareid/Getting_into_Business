@@ -178,6 +178,22 @@ str(housing_data, list.len = ncol(housing_data))
 
 ```
 
+
+
+```{r, echo = FALSE}
+get_mode <- function(x) {
+  uniq_x <- unique(x)
+  uniq_x[which.max(tabulate(match(x, uniq_x)))]
+}
+
+modes_selected<-lapply(housing_data, get_mode)
+
+modes_table<-data.frame(Attribute = names(modes_selected), Mode = unlist(modes_selected))
+
+print(modes_table)
+```
+
+
 ```{r, eval=TRUE, include=FALSE}
 #View(attributes_table)
 #Finding the data types of each attribute 
@@ -241,7 +257,7 @@ styled_table
 
 describe(housing_data)
 summary(housing_data$price)
-describe(housing_data$price)
+#describe(housing_data$price)
 
 # Select only numeric columns
 numeric_data <- housing_data[sapply(housing_data, is.numeric)]
@@ -271,20 +287,38 @@ colnames(housing_data) <- c("Date", "Price", "Number of Bedrooms", "Number of Ba
 ```
 
 ```{r}
-Attribute <- colnames(housing_data)  # Extract column names
-Code <- seq_along(Attribute)  # Create a sequence for the codes
+Attribute <- c("Date of Sale", "Sale Price", "Number of Bedrooms", "Number of Bathrooms", 
+               "Square Footage of Living Space", "Square Footage of Lot", "Number of Floors", 
+               "Waterfront Property (1=Yes, 0=No)", "View Rating", "Condition Rating", 
+               "Square Footage Above Ground", "Square Footage of Basement", 
+               "Year Built", "Year Renovated", "Street Name", "City Name", "Zip Code", "Country")
 
-# Create a proper data frame
-df <- data.frame(Code, Attribute, stringsAsFactors = FALSE)
+# Generate a sequence for the codes
+Code <- seq_along(Attribute)  
 
-# Generate a well-formatted table that links code numbers to each of the attributes in the dataset
+# Manually define the data types to align with the attribute descriptions
+Type <- c("character", "double", "double", "double",
+          "integer", "integer", "double", "integer", 
+          "integer", "integer", "integer", "integer", 
+          "integer", "integer", "character", "character",
+          "character", "character")  
+
+# Ensure that all three vectors have the same length
+if (length(Code) == length(Attribute) && length(Attribute) == length(Type)) {
+  # Create a proper data frame
+  df <- data.frame(Code, Attribute, Type, stringsAsFactors = FALSE)
+} else {
+  stop("Mismatch in vector lengths! Check your Attribute and Type definitions.")
+}
+
+# Generate a well-formatted table
 df %>% 
   kable(caption = "Attribute Codes for Housing Data", longtable = TRUE) %>%
   kable_styling(latex_options = c("hold_position", "repeat_header")) %>%
   row_spec(0, bold = TRUE) %>%
-  column_spec(1, bold = TRUE)
-
+  column_spec(1, bold = TRUE) 
 ```
+
 
 ```{r}
 
@@ -301,6 +335,7 @@ for (i in 1:ncol(m)) {
 cat(kable(bstats[, m[, i]], "latex", booktabs = TRUE, digits = 2, ), "\\newline")
 }
 ```
+
 
 ```{r, eval=TRUE, include=FALSE}
 print(kable(summary(bstats), format = "pipe", digits = 2))
@@ -413,6 +448,8 @@ In addtion, we could use this dataset to compare the trends in housing prices ov
 **Link to dataset**
 
 [Additional Dataset](https://fred.stlouisfed.org/series/WASTHPI#)
+
+
 
 
 
